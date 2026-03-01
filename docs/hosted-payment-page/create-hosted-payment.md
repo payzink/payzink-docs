@@ -28,18 +28,18 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
 
 ### Body parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `order` | `object` | Yes | Order details. |
-| `order.action` | `string` | Yes | `PURCHASE` for immediate charge, `AUTHORIZE` for pre-authorization. |
-| `order.amount` | `object` | Yes | Payment amount. |
-| `order.amount.currencyCode` | `string` | Yes | ISO 4217 currency code (e.g., `AED`, `USD`, `EUR`). |
-| `order.amount.value` | `integer` | Yes | Amount in minor units (e.g., `5000` = 50.00). |
-| `customer` | `object` | No | Customer details. |
-| `customer.email` | `string` | No | Customer's email address. |
+| Parameter | Type | Required | Description                                                                |
+|-----------|------|----------|----------------------------------------------------------------------------|
+| `order` | `object` | Yes | Order details.                                                             |
+| `order.action` | `string` | Yes | `PURCHASE` for immediate charge, `AUTH` for pre-authorization.             |
+| `order.amount` | `object` | Yes | Payment amount.                                                            |
+| `order.amount.currencyCode` | `string` | Yes | ISO 4217 currency code (e.g., `AED`, `USD`, `EUR`).                        |
+| `order.amount.value` | `integer` | Yes | Amount in minor units (e.g., `5000` = 50.00).                              |
+| `customer` | `object` | No | Customer details.                                                          |
+| `customer.email` | `string` | No | Customer's email address.                                                  |
 | `extra` | `object` | No | Custom key-value pairs for your internal use. Stored with the transaction. |
-| `_links` | `object` | No | Callback and notification URLs. |
-| `_links.notificationUrl` | `string` | No | Webhook URL to receive payment notifications. |
+| `_links` | `object` | No | Callback and notification URLs.                                            |
+| `_links.notificationUrl` | `string` | No | Webhook URL to receive payment notifications.                              |
 
 ### Example request
 
