@@ -193,7 +193,7 @@ curl -X GET https://merchant-dev.payzink.com/api/v1/payment/transaction/c50f8ad8
 
 ## Authorization & Capture flow
 
-Use `"action": "AUTHORIZE"` in the order, then capture later:
+Use `"action": "AUTH"` in the order, then capture later:
 
 ```bash
 curl -X POST https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/capture \

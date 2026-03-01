@@ -157,7 +157,7 @@ Never trust client-side redirect parameters alone. Always verify the transaction
 
 To separate authorization from capture:
 
-1. Create hosted payment with `"action": "AUTHORIZE"`.
+1. Create hosted payment with `"action": "AUTH"`.
 2. Customer completes checkout → transaction becomes `AUTHORISED`.
 3. Capture when you're ready:
 

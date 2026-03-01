@@ -63,12 +63,12 @@ The Hosted Payment Page (HPP) is a secure, Payzink-managed checkout page where y
 
 ## Payment actions
 
-| Action | Description | When to use |
-|--------|-------------|-------------|
+| Action     | Description | When to use |
+|------------|-------------|-------------|
 | `PURCHASE` | Charge the card immediately | One-step payment for goods/services |
-| `AUTHORIZE` | Reserve the amount on the card | When you need to capture later (e.g., ship then charge) |
+| `AUTH`     | Reserve the amount on the card | When you need to capture later (e.g., ship then charge) |
 
-With `AUTHORIZE`, you must later [capture the payment](/direct-api/capture) to collect the funds.
+With `AUTH`, you must later [capture the payment](/direct-api/capture) to collect the funds.
 
 ## Endpoints
 

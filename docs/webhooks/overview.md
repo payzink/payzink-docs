@@ -144,24 +144,24 @@ Every webhook notification follows this structure:
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field | Type | Description                                                                    |
+|-------|------|--------------------------------------------------------------------------------|
 | `event` | `string` | Event type (e.g. `PAYMENT.PURCHASED`). See [Webhook Events](/webhooks/events). |
-| `data` | `object` | Event payload data. |
-| `data.reference` | `string` | Transaction reference (UUID). |
-| `data.state` | `string` | Current [payment state](/payment-lifecycle/payment-states). |
-| `data.order` | `object` | Order details. |
-| `data.order.action` | `string` | `PURCHASE` or `AUTHORIZE`. |
-| `data.order.amount` | `integer` | Amount in minor units. |
-| `data.order.currency` | `string` | ISO 4217 currency code. |
-| `data.customer` | `object` | Customer information. |
-| `data.customer.country` | `string` | Customer's country code (ISO 3166-1 alpha-2). |
-| `data.customer.email` | `string` | Customer's email address. |
-| `data.extra` | `object` | Custom key-value pairs passed in the original payment request. |
-| `meta` | `object` | Webhook metadata. |
-| `meta.eventId` | `string` | Unique event identifier. Use for idempotency. |
-| `meta.triggeredAt` | `string` | ISO 8601 timestamp of when the event was triggered. |
-| `meta.version` | `string` | Webhook payload version. |
+| `data` | `object` | Event payload data.                                                            |
+| `data.reference` | `string` | Transaction reference (UUID).                                                  |
+| `data.state` | `string` | Current [payment state](/payment-lifecycle/payment-states).                    |
+| `data.order` | `object` | Order details.                                                                 |
+| `data.order.action` | `string` | `PURCHASE`, `SALE`, `AUTH`.                                                    |
+| `data.order.amount` | `integer` | Amount in minor units.                                                         |
+| `data.order.currency` | `string` | ISO 4217 currency code.                                                        |
+| `data.customer` | `object` | Customer information.                                                          |
+| `data.customer.country` | `string` | Customer's country code (ISO 3166-1 alpha-2).                                  |
+| `data.customer.email` | `string` | Customer's email address.                                                      |
+| `data.extra` | `object` | Custom key-value pairs passed in the original payment request.                 |
+| `meta` | `object` | Webhook metadata.                                                              |
+| `meta.eventId` | `string` | Unique event identifier. Use for idempotency.                                  |
+| `meta.triggeredAt` | `string` | ISO 8601 timestamp of when the event was triggered.                            |
+| `meta.version` | `string` | Webhook payload version.                                                       |
 
 ## Webhook HTTP headers
 

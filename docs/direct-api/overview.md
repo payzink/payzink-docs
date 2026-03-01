@@ -32,7 +32,7 @@ POST /payment/card (action: PURCHASE)  →  PURCHASED  →  SETTLED
 ### Authorization & Capture flow (two-step)
 
 ```
-POST /payment/card (action: AUTHORIZE)  →  AUTHORISED  →  CAPTURED  →  SETTLED
+POST /payment/card (action: AUTH)  →  AUTHORISED  →  CAPTURED
 ```
 
 **Use when:** You need to verify stock or ship before charging.

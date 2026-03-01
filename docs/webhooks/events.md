@@ -81,16 +81,16 @@ Every webhook follows the same structure with three top-level keys: `event`, `da
 
 ### `data` fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `reference` | `string` | Transaction reference (UUID). |
+| Field | Type | Description                                                 |
+|-------|------|-------------------------------------------------------------|
+| `reference` | `string` | Transaction reference (UUID).                               |
 | `state` | `string` | Current [payment state](/payment-lifecycle/payment-states). |
-| `order.action` | `string` | `PURCHASE` or `AUTHORIZE`. |
-| `order.amount` | `integer` | Amount in minor units. |
-| `order.currency` | `string` | ISO 4217 currency code. |
-| `customer.country` | `string` | Customer country (ISO 3166-1 alpha-2). |
-| `customer.email` | `string` | Customer email address. |
-| `extra` | `object` | Custom key-value pairs from the original payment request. |
+| `order.action` | `string` | `PURCHASE`, `SALE`, `AUTH`.                                 |
+| `order.amount` | `integer` | Amount in minor units.                                      |
+| `order.currency` | `string` | ISO 4217 currency code.                                     |
+| `customer.country` | `string` | Customer country (ISO 3166-1 alpha-2).                      |
+| `customer.email` | `string` | Customer email address.                                     |
+| `extra` | `object` | Custom key-value pairs from the original payment request.   |
 
 Additional fields may be present depending on the event type and the specific transaction action (e.g., `actionReference` for capture/refund events).
 
@@ -142,7 +142,7 @@ Additional fields may be present depending on the event type and the specific tr
     "reference": "c50f8ad8-4351-469a-90e5-3ae846826175",
     "state": "AUTHORISED",
     "order": {
-      "action": "AUTHORIZE",
+      "action": "AUTH",
       "amount": 10000,
       "currency": "USD"
     },
@@ -169,7 +169,7 @@ Additional fields may be present depending on the event type and the specific tr
     "reference": "c50f8ad8-4351-469a-90e5-3ae846826175",
     "state": "CAPTURED",
     "order": {
-      "action": "AUTHORIZE",
+      "action": "AUTH",
       "amount": 10000,
       "currency": "USD"
     },
@@ -250,7 +250,7 @@ Additional fields may be present depending on the event type and the specific tr
     "reference": "c50f8ad8-4351-469a-90e5-3ae846826175",
     "state": "REVERSED",
     "order": {
-      "action": "AUTHORIZE",
+      "action": "AUTH",
       "amount": 10000,
       "currency": "USD"
     },

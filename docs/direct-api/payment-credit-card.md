@@ -28,29 +28,29 @@ Process a credit or debit card payment. Supports both immediate purchase and pre
 
 ### Body parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
+| Parameter | Type | Required | Description                                                                                       |
+|-----------|------|----------|---------------------------------------------------------------------------------------------------|
 | `reference` | `string` | No | An existing transaction reference from `/payment/init`. If omitted, a new transaction is created. |
-| `order` | `object` | Yes | Order details. |
-| `order.action` | `string` | Yes | `PURCHASE` (immediate charge) or `AUTHORIZE` (pre-auth). |
-| `order.amount` | `object` | Yes | Payment amount. |
-| `order.amount.currencyCode` | `string` | Yes | ISO 4217 currency code (e.g., `EUR`, `USD`, `AED`). |
-| `order.amount.value` | `integer` | Yes | Amount in minor units (e.g., `5000` = 50.00). |
-| `payment` | `object` | Yes | Card details. |
-| `payment.pan` | `string` | Yes | Full card number (PAN), no spaces. |
-| `payment.expiryYear` | `string` | Yes | Four-digit expiry year (e.g., `"2038"`). |
-| `payment.expiryMonth` | `string` | Yes | Two-digit expiry month (e.g., `"05"`). |
-| `payment.cvv` | `string` | Yes | 3-digit CVV (4 digits for AMEX). |
-| `payment.cardHolderName` | `string` | Yes | Name as printed on the card. |
-| `customer` | `object` | No | Customer details. |
-| `customer.email` | `string` | No | Customer's email address. |
-| `customer.ip` | `string` | No | Customer's IP address (recommended for fraud prevention). |
-| `customer.phoneNumber` | `string` | No | Customer's phone number with country code. |
-| `customer.zipCode` | `string` | No | Customer's postal/ZIP code. |
-| `extra` | `object` | No | Custom key-value pairs for your internal use. |
-| `_links` | `object` | No | Callback and notification URLs. |
-| `_links.callbackUrl` | `string` | No | URL to redirect the customer after 3DS authentication. |
-| `_links.notificationUrl` | `string` | No | Webhook URL for payment notifications. |
+| `order` | `object` | Yes | Order details.                                                                                    |
+| `order.action` | `string` | Yes | `PURCHASE` (immediate charge) or `AUTH` (pre-auth).                                               |
+| `order.amount` | `object` | Yes | Payment amount.                                                                                   |
+| `order.amount.currencyCode` | `string` | Yes | ISO 4217 currency code (e.g., `EUR`, `USD`, `AED`).                                               |
+| `order.amount.value` | `integer` | Yes | Amount in minor units (e.g., `5000` = 50.00).                                                     |
+| `payment` | `object` | Yes | Card details.                                                                                     |
+| `payment.pan` | `string` | Yes | Full card number (PAN), no spaces.                                                                |
+| `payment.expiryYear` | `string` | Yes | Four-digit expiry year (e.g., `"2038"`).                                                          |
+| `payment.expiryMonth` | `string` | Yes | Two-digit expiry month (e.g., `"05"`).                                                            |
+| `payment.cvv` | `string` | Yes | 3-digit CVV (4 digits for AMEX).                                                                  |
+| `payment.cardHolderName` | `string` | Yes | Name as printed on the card.                                                                      |
+| `customer` | `object` | No | Customer details.                                                                                 |
+| `customer.email` | `string` | No | Customer's email address.                                                                         |
+| `customer.ip` | `string` | No | Customer's IP address (recommended for fraud prevention).                                         |
+| `customer.phoneNumber` | `string` | No | Customer's phone number with country code.                                                        |
+| `customer.zipCode` | `string` | No | Customer's postal/ZIP code.                                                                       |
+| `extra` | `object` | No | Custom key-value pairs for your internal use.                                                     |
+| `_links` | `object` | No | Callback and notification URLs.                                                                   |
+| `_links.callbackUrl` | `string` | No | URL to redirect the customer after 3DS authentication.                                            |
+| `_links.notificationUrl` | `string` | No | Webhook URL for payment notifications.                                                            |
 
 ### Example request — Purchase
 
@@ -91,7 +91,7 @@ Process a credit or debit card payment. Supports both immediate purchase and pre
 ```json
 {
   "order": {
-    "action": "AUTHORIZE",
+    "action": "AUTH",
     "amount": {
       "currencyCode": "USD",
       "value": 15000

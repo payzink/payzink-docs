@@ -98,7 +98,7 @@ No request body.
     "state": "AUTHORISED",
     "merchantName": "Your Merchant Name",
     "order": {
-      "action": "AUTHORIZE",
+      "action": "AUTH",
       "amount": {
         "currencyCode": "AED",
         "value": 1000
