@@ -44,7 +44,8 @@ const config = {
         title: "API Reference",
         logo: {
           alt: "Payzink Logo",
-          src: "img/logo.svg",
+          src: "img/logo-dark.svg",
+          srcDark: 'img/logo-light.svg',
         },
         items: [
           {
