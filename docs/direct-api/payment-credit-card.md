@@ -12,45 +12,45 @@ Process a credit or debit card payment. Supports both immediate purchase and pre
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/card` |
-| Production | `https://merchant.payzink.com/api/v1/payment/card` |
+| Environment | URL                                                    |
+|-------------|--------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/card` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/card`     |
 
 ## Request
 
 ### Headers
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Authorization` | `Bearer {accessToken}` | Yes |
-| `Content-Type` | `application/json` | Yes |
+| Header          | Value                  | Required |
+|-----------------|------------------------|----------|
+| `Authorization` | `Bearer {accessToken}` | Yes      |
+| `Content-Type`  | `application/json`     | Yes      |
 
 ### Body parameters
 
-| Parameter | Type | Required | Description                                                                                       |
-|-----------|------|----------|---------------------------------------------------------------------------------------------------|
-| `reference` | `string` | No | An existing transaction reference from `/payment/init`. If omitted, a new transaction is created. |
-| `order` | `object` | Yes | Order details.                                                                                    |
-| `order.action` | `string` | Yes | `PURCHASE` (immediate charge) or `AUTH` (pre-auth).                                               |
-| `order.amount` | `object` | Yes | Payment amount.                                                                                   |
-| `order.amount.currencyCode` | `string` | Yes | ISO 4217 currency code (e.g., `EUR`, `USD`, `AED`).                                               |
-| `order.amount.value` | `integer` | Yes | Amount in minor units (e.g., `5000` = 50.00).                                                     |
-| `payment` | `object` | Yes | Card details.                                                                                     |
-| `payment.pan` | `string` | Yes | Full card number (PAN), no spaces.                                                                |
-| `payment.expiryYear` | `string` | Yes | Four-digit expiry year (e.g., `"2038"`).                                                          |
-| `payment.expiryMonth` | `string` | Yes | Two-digit expiry month (e.g., `"05"`).                                                            |
-| `payment.cvv` | `string` | Yes | 3-digit CVV (4 digits for AMEX).                                                                  |
-| `payment.cardHolderName` | `string` | Yes | Name as printed on the card.                                                                      |
-| `customer` | `object` | No | Customer details.                                                                                 |
-| `customer.email` | `string` | No | Customer's email address.                                                                         |
-| `customer.ip` | `string` | No | Customer's IP address (recommended for fraud prevention).                                         |
-| `customer.phoneNumber` | `string` | No | Customer's phone number with country code.                                                        |
-| `customer.zipCode` | `string` | No | Customer's postal/ZIP code.                                                                       |
-| `extra` | `object` | No | Custom key-value pairs for your internal use.                                                     |
-| `_links` | `object` | No | Callback and notification URLs.                                                                   |
-| `_links.callbackUrl` | `string` | No | URL to redirect the customer after 3DS authentication.                                            |
-| `_links.notificationUrl` | `string` | No | Webhook URL for payment notifications.                                                            |
+| Parameter                   | Type      | Required | Description                                                                                       |
+|-----------------------------|-----------|----------|---------------------------------------------------------------------------------------------------|
+| `reference`                 | `string`  | No       | An existing transaction reference from `/payment/init`. If omitted, a new transaction is created. |
+| `order`                     | `object`  | Yes      | Order details.                                                                                    |
+| `order.action`              | `string`  | Yes      | `PURCHASE` (immediate charge) or `AUTH` (pre-auth).                                               |
+| `order.amount`              | `object`  | Yes      | Payment amount.                                                                                   |
+| `order.amount.currencyCode` | `string`  | Yes      | ISO 4217 currency code (e.g., `EUR`, `USD`, `AED`).                                               |
+| `order.amount.value`        | `integer` | Yes      | Amount in minor units (e.g., `5000` = 50.00).                                                     |
+| `payment`                   | `object`  | Yes      | Card details.                                                                                     |
+| `payment.pan`               | `string`  | Yes      | Full card number (PAN), no spaces.                                                                |
+| `payment.expiryYear`        | `string`  | Yes      | Four-digit expiry year (e.g., `"2038"`).                                                          |
+| `payment.expiryMonth`       | `string`  | Yes      | Two-digit expiry month (e.g., `"05"`).                                                            |
+| `payment.cvv`               | `string`  | Yes      | 3-digit CVV (4 digits for AMEX).                                                                  |
+| `payment.cardHolderName`    | `string`  | Yes      | Name as printed on the card.                                                                      |
+| `customer`                  | `object`  | No       | Customer details.                                                                                 |
+| `customer.email`            | `string`  | No       | Customer's email address.                                                                         |
+| `customer.ip`               | `string`  | No       | Customer's IP address (recommended for fraud prevention).                                         |
+| `customer.phoneNumber`      | `string`  | No       | Customer's phone number with country code.                                                        |
+| `customer.zipCode`          | `string`  | No       | Customer's postal/ZIP code.                                                                       |
+| `extra`                     | `object`  | No       | Custom key-value pairs for your internal use.                                                     |
+| `_links`                    | `object`  | No       | Callback and notification URLs.                                                                   |
+| `_links.callbackUrl`        | `string`  | No       | URL to redirect the customer after 3DS authentication.                                            |
+| `_links.notificationUrl`    | `string`  | No       | Webhook URL for payment notifications.                                                            |
 
 ### Example request — Purchase
 
@@ -181,22 +181,22 @@ All responses include a `meta` object with a unique `requestId` and a `result` o
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `meta.requestId` | `string` | Unique API request identifier. |
-| `result.reference` | `string` | Transaction reference (UUID). |
-| `result.paymentDetail` | `object` | Masked card details. |
-| `result.paymentDetail.pan` | `string` | Masked card number. |
-| `result.paymentDetail.brand` | `string` | Card brand (`VISA`, `MASTERCARD`, `AMEX`). |
-| `result.paymentDetail.cardHolderName` | `string` | Cardholder name. |
-| `result.mid` | `integer` | Merchant ID. |
-| `result.state` | `string` | Payment state (`PURCHASED`, `AUTHORISED`). |
-| `result.merchantName` | `string` | Your registered merchant name. |
-| `result.order` | `object` | Order details. |
-| `result._links` | `object` | Available actions (HATEOAS links). |
-| `result._links.self.href` | `string` | URL to retrieve transaction info. |
-| `result._links.cancel.href` | `string` | URL to cancel/void this transaction. |
-| `result._links.refund.href` | `string` | URL to refund this transaction. |
+| Field                                 | Type      | Description                                |
+|---------------------------------------|-----------|--------------------------------------------|
+| `meta.requestId`                      | `string`  | Unique API request identifier.             |
+| `result.reference`                    | `string`  | Transaction reference (UUID).              |
+| `result.paymentDetail`                | `object`  | Masked card details.                       |
+| `result.paymentDetail.pan`            | `string`  | Masked card number.                        |
+| `result.paymentDetail.brand`          | `string`  | Card brand (`VISA`, `MASTERCARD`, `AMEX`). |
+| `result.paymentDetail.cardHolderName` | `string`  | Cardholder name.                           |
+| `result.mid`                          | `integer` | Merchant ID.                               |
+| `result.state`                        | `string`  | Payment state (`PURCHASED`, `AUTHORISED`). |
+| `result.merchantName`                 | `string`  | Your registered merchant name.             |
+| `result.order`                        | `object`  | Order details.                             |
+| `result._links`                       | `object`  | Available actions (HATEOAS links).         |
+| `result._links.self.href`             | `string`  | URL to retrieve transaction info.          |
+| `result._links.cancel.href`           | `string`  | URL to cancel/void this transaction.       |
+| `result._links.refund.href`           | `string`  | URL to refund this transaction.            |
 
 ### Success — 3DS required
 

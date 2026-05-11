@@ -12,26 +12,26 @@ Refund a purchased or captured transaction. Supports full and partial refunds.
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/refund` |
-| Production | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/refund` |
+| Environment | URL                                                                              |
+|-------------|----------------------------------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/refund` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/refund`     |
 
 ## Request
 
 ### Path parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `reference` | `string` | Yes | The transaction reference to refund. |
+| Parameter   | Type     | Required | Description                          |
+|-------------|----------|----------|--------------------------------------|
+| `reference` | `string` | Yes      | The transaction reference to refund. |
 
 ### Body parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `amount` | `object` | Yes | Refund amount. |
-| `amount.currencyCode` | `string` | Yes | Must match the transaction currency. |
-| `amount.value` | `string\|integer` | Yes | Amount in minor units. Must be ≤ original amount. |
+| Parameter             | Type              | Required | Description                                       |
+|-----------------------|-------------------|----------|---------------------------------------------------|
+| `amount`              | `object`          | Yes      | Refund amount.                                    |
+| `amount.currencyCode` | `string`          | Yes      | Must match the transaction currency.              |
+| `amount.value`        | `string\|integer` | Yes      | Amount in minor units. Must be ≤ original amount. |
 
 ### Example
 

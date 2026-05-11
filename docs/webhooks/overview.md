@@ -6,14 +6,16 @@ description: Introduction to Payzink webhooks for real-time payment notification
 
 # Webhooks
 
-Webhooks allow Payzink to send real-time notifications to your server when payment events occur. Instead of polling the API for status changes, your server receives an HTTP POST request with event details as soon as something happens.
+Webhooks allow Payzink to send real-time notifications to your server when payment events occur. Instead of polling the
+API for status changes, your server receives an HTTP POST request with event details as soon as something happens.
 
 ## Why use webhooks?
 
 - **Real-time** — Get notified instantly when a payment state changes.
 - **Reliable** — Don't miss events due to network issues or browser closures.
 - **Efficient** — No need to repeatedly poll the API for updates.
-- **Complete** — Receive notifications for all payment events, even those initiated outside your integration (e.g., refunds from the dashboard).
+- **Complete** — Receive notifications for all payment events, even those initiated outside your integration (e.g.,
+  refunds from the dashboard).
 
 ## How webhooks work
 
@@ -41,11 +43,13 @@ Webhooks allow Payzink to send real-time notifications to your server when payme
 You can configure webhooks in two ways:
 
 - **Per-transaction** — Pass `_links.notificationUrl` in the payment request body.
-- **Dashboard** — Set a global webhook URL in **Settings → Webhooks** on your [Payzink dashboard](https://console-dev.payzink.com).
+- **Dashboard** — Set a global webhook URL in **Settings → Webhooks** on
+  your [Payzink dashboard](https://console-dev.payzink.com).
 
 ### 2. Build your endpoint
 
 Your webhook endpoint must:
+
 - Accept `POST` requests with `Content-Type: application/json`
 - Verify the webhook signature (see [Security](/webhooks/security))
 - Return `200 OK` quickly (within 5 seconds)
@@ -144,38 +148,38 @@ Every webhook notification follows this structure:
 }
 ```
 
-| Field | Type | Description                                                                    |
-|-------|------|--------------------------------------------------------------------------------|
-| `event` | `string` | Event type (e.g. `PAYMENT.PURCHASED`). See [Webhook Events](/webhooks/events). |
-| `data` | `object` | Event payload data.                                                            |
-| `data.reference` | `string` | Transaction reference (UUID).                                                  |
-| `data.state` | `string` | Current [payment state](/payment-lifecycle/payment-states).                    |
-| `data.order` | `object` | Order details.                                                                 |
-| `data.order.action` | `string` | `PURCHASE`, `SALE`, `AUTH`.                                                    |
-| `data.order.amount` | `integer` | Amount in minor units.                                                         |
-| `data.order.currency` | `string` | ISO 4217 currency code.                                                        |
-| `data.customer` | `object` | Customer information.                                                          |
-| `data.customer.country` | `string` | Customer's country code (ISO 3166-1 alpha-2).                                  |
-| `data.customer.email` | `string` | Customer's email address.                                                      |
-| `data.extra` | `object` | Custom key-value pairs passed in the original payment request.                 |
-| `meta` | `object` | Webhook metadata.                                                              |
-| `meta.eventId` | `string` | Unique event identifier. Use for idempotency.                                  |
-| `meta.triggeredAt` | `string` | ISO 8601 timestamp of when the event was triggered.                            |
-| `meta.version` | `string` | Webhook payload version.                                                       |
+| Field                   | Type      | Description                                                                    |
+|-------------------------|-----------|--------------------------------------------------------------------------------|
+| `event`                 | `string`  | Event type (e.g. `PAYMENT.PURCHASED`). See [Webhook Events](/webhooks/events). |
+| `data`                  | `object`  | Event payload data.                                                            |
+| `data.reference`        | `string`  | Transaction reference (UUID).                                                  |
+| `data.state`            | `string`  | Current [payment state](/payment-lifecycle/payment-states).                    |
+| `data.order`            | `object`  | Order details.                                                                 |
+| `data.order.action`     | `string`  | `PURCHASE`, `SALE`, `AUTH`.                                                    |
+| `data.order.amount`     | `integer` | Amount in minor units.                                                         |
+| `data.order.currency`   | `string`  | ISO 4217 currency code.                                                        |
+| `data.customer`         | `object`  | Customer information.                                                          |
+| `data.customer.country` | `string`  | Customer's country code (ISO 3166-1 alpha-2).                                  |
+| `data.customer.email`   | `string`  | Customer's email address.                                                      |
+| `data.extra`            | `object`  | Custom key-value pairs passed in the original payment request.                 |
+| `meta`                  | `object`  | Webhook metadata.                                                              |
+| `meta.eventId`          | `string`  | Unique event identifier. Use for idempotency.                                  |
+| `meta.triggeredAt`      | `string`  | ISO 8601 timestamp of when the event was triggered.                            |
+| `meta.version`          | `string`  | Webhook payload version.                                                       |
 
 ## Webhook HTTP headers
 
 Payzink includes the following headers with every webhook request:
 
-| Header | Description | Example |
-|--------|-------------|---------|
-| `Content-Type` | Always `application/json` | `application/json` |
-| `X-Payzink-Timestamp` | Unix timestamp (seconds) when the webhook was sent | `1709128200` |
-| `X-Payzink-Signature` | HMAC-SHA256 signature for verification | `a1b2c3d4e5f6...` |
-| `X-Payzink-Signature-Version` | Signature version | `v1` |
-| `X-Payzink-Signature-Algorithm` | Hash algorithm used for signature | `sha256` |
-| `X-Payzink-Signature-Digest` | SHA-256 hash of the raw payload body | `f8e7d6c5b4a3...` |
-| `User-Agent` | Payzink webhook user agent | `PayzinkWebhook/1.0.0 (event=PAYMENT.PURCHASED; ...)` |
+| Header                          | Description                                        | Example                                               |
+|---------------------------------|----------------------------------------------------|-------------------------------------------------------|
+| `Content-Type`                  | Always `application/json`                          | `application/json`                                    |
+| `X-Payzink-Timestamp`           | Unix timestamp (seconds) when the webhook was sent | `1709128200`                                          |
+| `X-Payzink-Signature`           | HMAC-SHA256 signature for verification             | `a1b2c3d4e5f6...`                                     |
+| `X-Payzink-Signature-Version`   | Signature version                                  | `v1`                                                  |
+| `X-Payzink-Signature-Algorithm` | Hash algorithm used for signature                  | `sha256`                                              |
+| `X-Payzink-Signature-Digest`    | SHA-256 hash of the raw payload body               | `f8e7d6c5b4a3...`                                     |
+| `User-Agent`                    | Payzink webhook user agent                         | `PayzinkWebhook/1.0.0 (event=PAYMENT.PURCHASED; ...)` |
 
 ## Next steps
 

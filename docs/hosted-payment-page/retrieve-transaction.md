@@ -8,28 +8,29 @@ description: Verify payment status after checkout.
 
 <span class="badge badge--get">GET</span> `/api/v1/payment/transaction/{reference}/info`
 
-After a customer completes the hosted checkout, call this endpoint to verify the payment result. You can use the `_links.self.href` URL from the hosted payment response.
+After a customer completes the hosted checkout, call this endpoint to verify the payment result. You can use the
+`_links.self.href` URL from the hosted payment response.
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/info` |
-| Production | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/info` |
+| Environment | URL                                                                            |
+|-------------|--------------------------------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/info` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/info`     |
 
 ## Request
 
 ### Path parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `reference` | `string` | Yes | The transaction reference returned from the hosted payment response. |
+| Parameter   | Type     | Required | Description                                                          |
+|-------------|----------|----------|----------------------------------------------------------------------|
+| `reference` | `string` | Yes      | The transaction reference returned from the hosted payment response. |
 
 ### Headers
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Authorization` | `Bearer {accessToken}` | Yes |
+| Header          | Value                  | Required |
+|-----------------|------------------------|----------|
+| `Authorization` | `Bearer {accessToken}` | Yes      |
 
 No request body.
 

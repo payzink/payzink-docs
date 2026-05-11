@@ -12,25 +12,25 @@ Exchange your merchant API credentials for a short-lived access token.
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/auth/access-token` |
-| Production | `https://merchant.payzink.com/api/v1/auth/access-token` |
+| Environment | URL                                                         |
+|-------------|-------------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/auth/access-token` |
+| Production  | `https://merchant.payzink.com/api/v1/auth/access-token`     |
 
 ## Request
 
 ### Headers
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Content-Type` | `application/json` | Yes |
+| Header         | Value              | Required |
+|----------------|--------------------|----------|
+| `Content-Type` | `application/json` | Yes      |
 
 ### Body parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `publishableKey` | `string` | Yes | Your publishable (public) key from the Payzink dashboard. |
-| `secretKey` | `string` | Yes | Your secret key from the Payzink dashboard. |
+| Parameter        | Type     | Required | Description                                               |
+|------------------|----------|----------|-----------------------------------------------------------|
+| `publishableKey` | `string` | Yes      | Your publishable (public) key from the Payzink dashboard. |
+| `secretKey`      | `string` | Yes      | Your secret key from the Payzink dashboard.               |
 
 ### Example request
 
@@ -57,11 +57,11 @@ All Payzink API responses are wrapped in a `result` object.
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `result.accessToken` | `string` | The JWT access token to use in subsequent API calls. |
-| `result.tokenType` | `string` | Always `"bearer"`. |
-| `result.expiresIn` | `integer` | Token lifetime in seconds (typically `300`). |
+| Field                | Type      | Description                                          |
+|----------------------|-----------|------------------------------------------------------|
+| `result.accessToken` | `string`  | The JWT access token to use in subsequent API calls. |
+| `result.tokenType`   | `string`  | Always `"bearer"`.                                   |
+| `result.expiresIn`   | `integer` | Token lifetime in seconds (typically `300`).         |
 
 ### Error — `401 Unauthorized`
 
@@ -156,10 +156,10 @@ access_token = data["result"]["accessToken"]
 
 ## Rate limits
 
-| Limit | Value |
-|-------|-------|
-| Requests per minute | 60 |
-| Requests per hour | 500 |
+| Limit               | Value |
+|---------------------|-------|
+| Requests per minute | 60    |
+| Requests per hour   | 500   |
 
 ## Next steps
 

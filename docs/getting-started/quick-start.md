@@ -6,7 +6,8 @@ description: Make your first Payzink API call in under 5 minutes.
 
 # Quick Start Guide
 
-Follow these steps to process your first payment using the Payzink sandbox. This guide uses the **Hosted Payment Page** method — the fastest way to get started.
+Follow these steps to process your first payment using the Payzink sandbox. This guide uses the **Hosted Payment Page**
+method — the fastest way to get started.
 
 ## Prerequisites
 
@@ -67,7 +68,8 @@ curl -X POST https://merchant-dev.payzink.com/api/v1/payment/hosted \
 ```
 
 :::note About the amount
-The `value` field is in **minor units**. For AED, `1000` means **10.00 AED** (1000 fils). For USD, `1000` means **$10.00** (1000 cents).
+The `value` field is in **minor units**. For AED, `1000` means **10.00 AED** (1000 fils). For USD, `1000` means **$10.00
+** (1000 cents).
 :::
 
 **Response:**
@@ -112,16 +114,17 @@ Redirect your customer to the URL in `result._links.payment.href`. Payzink will:
 
 For testing, use the test card:
 
-| Field | Value |
-|-------|-------|
-| Card number | `4111 1111 1111 1111` |
-| Expiry | Any future date (e.g. `12/27`) |
-| CVV | `123` |
-| Cardholder name | Any name |
+| Field           | Value                          |
+|-----------------|--------------------------------|
+| Card number     | `4111 1111 1111 1111`          |
+| Expiry          | Any future date (e.g. `12/27`) |
+| CVV             | `123`                          |
+| Cardholder name | Any name                       |
 
 ## Step 4: Check payment status
 
-After the customer completes payment, verify the status using the `result._links.self.href` URL or construct it manually:
+After the customer completes payment, verify the status using the `result._links.self.href` URL or construct it
+manually:
 
 ```bash
 curl -X GET https://merchant-dev.payzink.com/api/v1/payment/transaction/02204c33-a250-45f2-ac73-3714acd6cbb1/info \

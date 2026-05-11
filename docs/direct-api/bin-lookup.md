@@ -12,25 +12,25 @@ Retrieve card information from a Bank Identification Number (BIN). The BIN is th
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/bin/info` |
-| Production | `https://merchant.payzink.com/api/v1/bin/info` |
+| Environment | URL                                                |
+|-------------|----------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/bin/info` |
+| Production  | `https://merchant.payzink.com/api/v1/bin/info`     |
 
 ## Request
 
 ### Headers
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Authorization` | `Bearer {accessToken}` | Yes |
-| `Content-Type` | `application/json` | Yes |
+| Header          | Value                  | Required |
+|-----------------|------------------------|----------|
+| `Authorization` | `Bearer {accessToken}` | Yes      |
+| `Content-Type`  | `application/json`     | Yes      |
 
 ### Body parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `bin` | `string` | Yes | First 6–8 digits of the card number. |
+| Parameter | Type     | Required | Description                          |
+|-----------|----------|----------|--------------------------------------|
+| `bin`     | `string` | Yes      | First 6–8 digits of the card number. |
 
 ### Example request
 
@@ -57,14 +57,14 @@ Retrieve card information from a Bank Identification Number (BIN). The BIN is th
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `result.bin` | `string` | The queried BIN. |
-| `result.cardNetwork` | `string` | Card network (`VISA`, `MASTERCARD`, `AMEX`). |
-| `result.cardType` | `string` | Card type (`CREDIT`, `DEBIT`, `PREPAID`). |
-| `result.issuingBank` | `string` | Name of the issuing bank. |
-| `result.issuingCountry` | `string` | ISO 3166-1 alpha-2 country code. |
-| `result.issuingCountryName` | `string` | Full country name. |
+| Field                       | Type     | Description                                  |
+|-----------------------------|----------|----------------------------------------------|
+| `result.bin`                | `string` | The queried BIN.                             |
+| `result.cardNetwork`        | `string` | Card network (`VISA`, `MASTERCARD`, `AMEX`). |
+| `result.cardType`           | `string` | Card type (`CREDIT`, `DEBIT`, `PREPAID`).    |
+| `result.issuingBank`        | `string` | Name of the issuing bank.                    |
+| `result.issuingCountry`     | `string` | ISO 3166-1 alpha-2 country code.             |
+| `result.issuingCountryName` | `string` | Full country name.                           |
 
 ## Code examples
 

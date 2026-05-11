@@ -10,7 +10,8 @@ Follow these practices to ensure your webhook integration is reliable and produc
 
 ## Respond quickly
 
-Your endpoint must return a `200 OK` response within **5 seconds**. If Payzink doesn't receive a response in time, it considers the delivery failed and will retry.
+Your endpoint must return a `200 OK` response within **5 seconds**. If Payzink doesn't receive a response in time, it
+considers the delivery failed and will retry.
 
 **Do:** Acknowledge the webhook immediately, then process asynchronously.
 
@@ -36,20 +37,21 @@ app.post("/webhooks/payzink", express.raw({ type: "application/json" }), (req, r
 
 If your endpoint doesn't return `200 OK`, Payzink retries the webhook with exponential backoff:
 
-| Retry | Delay |
-|-------|-------|
-| 1st | 1 minute |
-| 2nd | 5 minutes |
-| 3rd | 30 minutes |
-| 4th | 2 hours |
-| 5th | 12 hours |
-| 6th (final) | 24 hours |
+| Retry       | Delay      |
+|-------------|------------|
+| 1st         | 1 minute   |
+| 2nd         | 5 minutes  |
+| 3rd         | 30 minutes |
+| 4th         | 2 hours    |
+| 5th         | 12 hours   |
+| 6th (final) | 24 hours   |
 
 After 6 failed attempts, the webhook is marked as permanently failed. You can view failed webhooks in the dashboard.
 
 ## Ensure idempotency
 
-Webhooks may be delivered more than once (due to retries or network issues). Use the `meta.eventId` field to ensure you process each event only once:
+Webhooks may be delivered more than once (due to retries or network issues). Use the `meta.eventId` field to ensure you
+process each event only once:
 
 ```javascript
 async function processWebhookAsync(payload) {
@@ -113,7 +115,8 @@ function handleEvent(eventType, data) {
 
 ## Handle out-of-order delivery
 
-Webhook events may arrive out of order. For example, you might receive `PAYMENT.REFUNDED` before `PAYMENT.CAPTURED` due to network timing. Design your handler to be resilient:
+Webhook events may arrive out of order. For example, you might receive `PAYMENT.REFUNDED` before `PAYMENT.CAPTURED` due
+to network timing. Design your handler to be resilient:
 
 - Use `meta.triggeredAt` to determine event ordering.
 - Check the current state of the resource before applying changes.
@@ -121,7 +124,8 @@ Webhook events may arrive out of order. For example, you might receive `PAYMENT.
 
 ## Use the `extra` field
 
-The `data.extra` field in webhooks contains the custom key-value pairs you passed in the original payment request. Use this to correlate webhook events with your internal orders:
+The `data.extra` field in webhooks contains the custom key-value pairs you passed in the original payment request. Use
+this to correlate webhook events with your internal orders:
 
 ```javascript
 case "PAYMENT.PURCHASED":
@@ -134,7 +138,8 @@ case "PAYMENT.PURCHASED":
 
 ## Use HTTPS
 
-Your webhook endpoint **must** use HTTPS with a valid TLS certificate. Payzink will not deliver webhooks to HTTP (non-secure) endpoints.
+Your webhook endpoint **must** use HTTPS with a valid TLS certificate. Payzink will not deliver webhooks to HTTP (
+non-secure) endpoints.
 
 ## Monitor webhook health
 

@@ -6,31 +6,32 @@ description: API reference for cancelling a specific action on a transaction.
 
 # Cancel an Action
 
-<span class="badge badge--delete">DELETE</span> `/api/v1/payment/transaction/{reference}/action/{action_reference}/cancel`
+<span class="badge badge--delete">DELETE</span>
+`/api/v1/payment/transaction/{reference}/action/{action_reference}/cancel`
 
 Cancel (void) a specific action on a transaction, such as a capture.
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/action/{action_reference}/cancel` |
-| Production | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/action/{action_reference}/cancel` |
+| Environment | URL                                                                                                        |
+|-------------|------------------------------------------------------------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/action/{action_reference}/cancel` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/action/{action_reference}/cancel`     |
 
 ## Request
 
 ### Path parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `reference` | `string` | Yes | The transaction reference. |
-| `action_reference` | `string` | Yes | The action reference to cancel. |
+| Parameter          | Type     | Required | Description                     |
+|--------------------|----------|----------|---------------------------------|
+| `reference`        | `string` | Yes      | The transaction reference.      |
+| `action_reference` | `string` | Yes      | The action reference to cancel. |
 
 ### Headers
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Authorization` | `Bearer {accessToken}` | Yes |
+| Header          | Value                  | Required |
+|-----------------|------------------------|----------|
+| `Authorization` | `Bearer {accessToken}` | Yes      |
 
 No request body is required.
 

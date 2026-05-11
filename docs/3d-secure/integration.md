@@ -82,7 +82,8 @@ curl -X POST https://merchant-dev.payzink.com/api/v1/payment/card \
 
 ### Step 2: Check for 3DS requirement
 
-If the response has `state: "AWAIT_3DS"`, 3DS authentication is required. The 3DS URL is in `result._links["payment:3ds"].href`:
+If the response has `state: "AWAIT_3DS"`, 3DS authentication is required. The 3DS URL is in
+`result._links["payment:3ds"].href`:
 
 ```json
 {
@@ -168,24 +169,24 @@ app.get("/3ds-callback", async (req, res) => {
 
 ## 3DS-related status codes
 
-| Status Code | Meaning | Action |
-|-------------|---------|--------|
-| `S01` | 3DS required | Redirect customer to `_links["payment:3ds"].href` |
-| `S00` | 3DS passed, payment successful | Fulfill order |
-| `E000001` | 3DS processing error | Ask customer to retry |
-| `E000002` | Invalid 3DS PIN/OTP | Ask customer to retry |
-| `E000003` | 3DS timeout | Ask customer to retry |
+| Status Code | Meaning                        | Action                                            |
+|-------------|--------------------------------|---------------------------------------------------|
+| `S01`       | 3DS required                   | Redirect customer to `_links["payment:3ds"].href` |
+| `S00`       | 3DS passed, payment successful | Fulfill order                                     |
+| `E000001`   | 3DS processing error           | Ask customer to retry                             |
+| `E000002`   | Invalid 3DS PIN/OTP            | Ask customer to retry                             |
+| `E000003`   | 3DS timeout                    | Ask customer to retry                             |
 
 ## Testing 3DS
 
 Use these [test cards](/getting-started/test-cards) in the sandbox:
 
-| Card | Behavior |
-|------|----------|
+| Card                  | Behavior                                 |
+|-----------------------|------------------------------------------|
 | `4000 0000 0000 3220` | Challenge flow (requires authentication) |
-| `4000 0000 0000 3238` | Frictionless flow (auto-approved) |
-| `4000 0000 0000 3246` | Authentication failed |
-| `4000 0000 0000 3253` | Challenge timeout |
+| `4000 0000 0000 3238` | Frictionless flow (auto-approved)        |
+| `4000 0000 0000 3246` | Authentication failed                    |
+| `4000 0000 0000 3253` | Challenge timeout                        |
 
 When redirected to the sandbox 3DS challenge page, use password: `Checkout1!`
 

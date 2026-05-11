@@ -150,7 +150,8 @@ curl -X GET https://merchant-dev.payzink.com/api/v1/payment/transaction/02204c33
 ```
 
 :::warning Always verify server-side
-Never trust client-side redirect parameters alone. Always verify the transaction status via `GET /api/v1/payment/transaction/{reference}/info`.
+Never trust client-side redirect parameters alone. Always verify the transaction status via
+`GET /api/v1/payment/transaction/{reference}/info`.
 :::
 
 ## Authorize + Capture flow

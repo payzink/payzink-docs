@@ -6,7 +6,8 @@ description: Learn about Payzink's Direct API integration for full checkout cont
 
 # Direct API
 
-The Direct API gives you full control over the payment experience. Collect card details in your own frontend and send them directly to Payzink for processing.
+The Direct API gives you full control over the payment experience. Collect card details in your own frontend and send
+them directly to Payzink for processing.
 
 ## Why use the Direct API?
 
@@ -39,18 +40,18 @@ POST /payment/card (action: AUTH)  →  AUTHORISED  →  CAPTURED
 
 ## Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| <span class="badge badge--post">POST</span> | `/api/v1/auth/access-token` | [Get an access token](/authentication/access-token) |
-| <span class="badge badge--post">POST</span> | `/api/v1/payment/init` | [Initialize a payment](/direct-api/payment-initialization) |
-| <span class="badge badge--post">POST</span> | `/api/v1/payment/card` | [Payment with credit card](/direct-api/payment-credit-card) |
-| <span class="badge badge--post">POST</span> | `/api/v1/bin/info` | [BIN lookup](/direct-api/bin-lookup) |
-| <span class="badge badge--post">POST</span> | `/api/v1/payment/transaction/{reference}/capture` | [Capture a payment](/direct-api/capture) |
-| <span class="badge badge--delete">DELETE</span> | `/api/v1/payment/transaction/{reference}/cancel` | [Cancel a transaction (void)](/direct-api/cancel-transaction) |
-| <span class="badge badge--post">POST</span> | `/api/v1/payment/transaction/{reference}/refund` | [Refund a transaction](/direct-api/refund-transaction) |
-| <span class="badge badge--delete">DELETE</span> | `/api/v1/payment/transaction/{ref}/action/{action_ref}/cancel` | [Cancel an action](/direct-api/cancel-action) |
-| <span class="badge badge--post">POST</span> | `/api/v1/payment/transaction/{ref}/action/{action_ref}/refund` | [Refund an action](/direct-api/refund-action) |
-| <span class="badge badge--get">GET</span> | `/api/v1/payment/transaction/{reference}/info` | [Transaction info](/direct-api/transaction-info) |
+| Method                                          | Endpoint                                                       | Description                                                   |
+|-------------------------------------------------|----------------------------------------------------------------|---------------------------------------------------------------|
+| <span class="badge badge--post">POST</span>     | `/api/v1/auth/access-token`                                    | [Get an access token](/authentication/access-token)           |
+| <span class="badge badge--post">POST</span>     | `/api/v1/payment/init`                                         | [Initialize a payment](/direct-api/payment-initialization)    |
+| <span class="badge badge--post">POST</span>     | `/api/v1/payment/card`                                         | [Payment with credit card](/direct-api/payment-credit-card)   |
+| <span class="badge badge--post">POST</span>     | `/api/v1/bin/info`                                             | [BIN lookup](/direct-api/bin-lookup)                          |
+| <span class="badge badge--post">POST</span>     | `/api/v1/payment/transaction/{reference}/capture`              | [Capture a payment](/direct-api/capture)                      |
+| <span class="badge badge--delete">DELETE</span> | `/api/v1/payment/transaction/{reference}/cancel`               | [Cancel a transaction (void)](/direct-api/cancel-transaction) |
+| <span class="badge badge--post">POST</span>     | `/api/v1/payment/transaction/{reference}/refund`               | [Refund a transaction](/direct-api/refund-transaction)        |
+| <span class="badge badge--delete">DELETE</span> | `/api/v1/payment/transaction/{ref}/action/{action_ref}/cancel` | [Cancel an action](/direct-api/cancel-action)                 |
+| <span class="badge badge--post">POST</span>     | `/api/v1/payment/transaction/{ref}/action/{action_ref}/refund` | [Refund an action](/direct-api/refund-action)                 |
+| <span class="badge badge--get">GET</span>       | `/api/v1/payment/transaction/{reference}/info`                 | [Transaction info](/direct-api/transaction-info)              |
 
 ## Next steps
 

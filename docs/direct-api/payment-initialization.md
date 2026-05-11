@@ -8,29 +8,30 @@ description: API reference for initializing a payment session.
 
 <span class="badge badge--post">POST</span> `/api/v1/payment/init`
 
-Initialize a payment session. This retrieves your merchant configuration (supported payment methods, integrations) and optionally creates a transaction reference.
+Initialize a payment session. This retrieves your merchant configuration (supported payment methods, integrations) and
+optionally creates a transaction reference.
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/init` |
-| Production | `https://merchant.payzink.com/api/v1/payment/init` |
+| Environment | URL                                                    |
+|-------------|--------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/init` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/init`     |
 
 ## Request
 
 ### Headers
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Authorization` | `Bearer {accessToken}` | Yes |
-| `Content-Type` | `application/json` | Yes |
+| Header          | Value                  | Required |
+|-----------------|------------------------|----------|
+| `Authorization` | `Bearer {accessToken}` | Yes      |
+| `Content-Type`  | `application/json`     | Yes      |
 
 ### Body parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `reference` | `string` | No | An existing transaction reference to resume. If omitted, a new session is initialized. |
+| Parameter   | Type     | Required | Description                                                                            |
+|-------------|----------|----------|----------------------------------------------------------------------------------------|
+| `reference` | `string` | No       | An existing transaction reference to resume. If omitted, a new session is initialized. |
 
 ### Example request
 
@@ -70,17 +71,17 @@ Or to resume an existing transaction:
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `meta.requestId` | `string` | Unique identifier for this API request. |
-| `result.mid` | `integer` | Merchant ID. |
-| `result.merchantName` | `string` | Your registered merchant name. |
-| `result.merchantNameSignatured` | `string` | Merchant name with Payzink signature. |
-| `result.countryCode` | `string` | Merchant's registered country (ISO 3166-1 alpha-2). |
-| `result.order` | `array` | Order details (empty array if no order exists yet). |
-| `result.primaryPaymentMethod` | `string` | Default payment method for this merchant. |
-| `result.paymentMethods` | `array` | List of available payment methods. |
-| `result.integrations` | `array` | Active integrations for this merchant. |
+| Field                           | Type      | Description                                         |
+|---------------------------------|-----------|-----------------------------------------------------|
+| `meta.requestId`                | `string`  | Unique identifier for this API request.             |
+| `result.mid`                    | `integer` | Merchant ID.                                        |
+| `result.merchantName`           | `string`  | Your registered merchant name.                      |
+| `result.merchantNameSignatured` | `string`  | Merchant name with Payzink signature.               |
+| `result.countryCode`            | `string`  | Merchant's registered country (ISO 3166-1 alpha-2). |
+| `result.order`                  | `array`   | Order details (empty array if no order exists yet). |
+| `result.primaryPaymentMethod`   | `string`  | Default payment method for this merchant.           |
+| `result.paymentMethods`         | `array`   | List of available payment methods.                  |
+| `result.integrations`           | `array`   | Active integrations for this merchant.              |
 
 ## Code examples
 

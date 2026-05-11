@@ -16,26 +16,26 @@ Authorizations typically expire after **7 days**. Uncaptured authorizations are 
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/capture` |
-| Production | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/capture` |
+| Environment | URL                                                                               |
+|-------------|-----------------------------------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/capture` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/capture`     |
 
 ## Request
 
 ### Path parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `reference` | `string` | Yes | The transaction reference from the authorize response. |
+| Parameter   | Type     | Required | Description                                            |
+|-------------|----------|----------|--------------------------------------------------------|
+| `reference` | `string` | Yes      | The transaction reference from the authorize response. |
 
 ### Body parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `amount` | `object` | Yes | Capture amount. |
-| `amount.currencyCode` | `string` | Yes | Must match the authorization currency. |
-| `amount.value` | `string\|integer` | Yes | Amount to capture in minor units. Can be ≤ authorized amount. |
+| Parameter             | Type              | Required | Description                                                   |
+|-----------------------|-------------------|----------|---------------------------------------------------------------|
+| `amount`              | `object`          | Yes      | Capture amount.                                               |
+| `amount.currencyCode` | `string`          | Yes      | Must match the authorization currency.                        |
+| `amount.value`        | `string\|integer` | Yes      | Amount to capture in minor units. Can be ≤ authorized amount. |
 
 ### Example — Full capture
 

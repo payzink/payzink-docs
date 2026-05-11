@@ -6,20 +6,21 @@ description: Set up and use the Payzink sandbox for testing your integration.
 
 # Sandbox Environment
 
-The Payzink sandbox is a fully functional test environment that mirrors the production API. Use it to develop and test your integration without processing real payments.
+The Payzink sandbox is a fully functional test environment that mirrors the production API. Use it to develop and test
+your integration without processing real payments.
 
 ## Sandbox vs Production
 
-| | Sandbox | Production |
-|---|---|---|
-| **Merchant API** | `https://merchant-dev.payzink.com` | `https://merchant.payzink.com` |
-| **Payment (3DS) Domain** | `https://payment-dev.payzink.com` | `https://payment.payzink.com` |
-| **Dashboard** | [console-dev.payzink.com](https://console-dev.payzink.com) | [console.payzink.com](https://console.payzink.com) |
-| **Real money** | No | Yes |
-| **Card networks** | Simulated | Live |
-| **3D Secure** | Simulated challenges | Real bank challenges |
-| **Webhooks** | Fully supported | Fully supported |
-| **Rate limits** | Relaxed | Standard |
+|                          | Sandbox                                                    | Production                                         |
+|--------------------------|------------------------------------------------------------|----------------------------------------------------|
+| **Merchant API**         | `https://merchant-dev.payzink.com`                         | `https://merchant.payzink.com`                     |
+| **Payment (3DS) Domain** | `https://payment-dev.payzink.com`                          | `https://payment.payzink.com`                      |
+| **Dashboard**            | [console-dev.payzink.com](https://console-dev.payzink.com) | [console.payzink.com](https://console.payzink.com) |
+| **Real money**           | No                                                         | Yes                                                |
+| **Card networks**        | Simulated                                                  | Live                                               |
+| **3D Secure**            | Simulated challenges                                       | Real bank challenges                               |
+| **Webhooks**             | Fully supported                                            | Fully supported                                    |
+| **Rate limits**          | Relaxed                                                    | Standard                                           |
 
 ## Setting up your sandbox account
 
@@ -29,7 +30,8 @@ The Payzink sandbox is a fully functional test environment that mirrors the prod
 4. Store your credentials securely — never expose the Secret Key in client-side code or commit it to version control.
 
 :::caution Keep your credentials safe
-Your Secret Key is shown only once when generated. If you lose it, you will need to generate a new one from the dashboard.
+Your Secret Key is shown only once when generated. If you lose it, you will need to generate a new one from the
+dashboard.
 :::
 
 ## What you can test
@@ -39,7 +41,7 @@ The sandbox supports the full payment lifecycle:
 - **Authentication** — Request access tokens
 - **Hosted Payment Page** — Create hosted payments and redirect to the test checkout page
 - **Direct API** — Send card payments directly
-- **Apple Pay / PayPal / Stripe** — Test alternative payment methods
+- **Apple Pay - Google Pay** — Test alternative payment methods
 - **Authorization & Capture** — Pre-authorize and capture payments
 - **Void** — Cancel authorizations
 - **Refunds** — Refund captured or purchased payments
@@ -50,13 +52,19 @@ The sandbox supports the full payment lifecycle:
 ## Sandbox behavior
 
 ### Simulated processing
-All transactions in the sandbox are simulated. No real money is charged, and no real bank communication occurs. However, the API responses and payment states behave identically to production.
+
+All transactions in the sandbox are simulated. No real money is charged, and no real bank communication occurs. However,
+the API responses and payment states behave identically to production.
 
 ### Test cards
-Use the [test cards](/getting-started/test-cards) to simulate different payment outcomes including approvals, declines, and 3D Secure challenges.
+
+Use the [test cards](/getting-started/test-cards) to simulate different payment outcomes including approvals, declines,
+and 3D Secure challenges.
 
 ### Webhook testing
-Configure your webhook URL in the sandbox dashboard under **Settings → Webhooks**. You can use tools like [webhook.site](https://webhook.site) or [ngrok](https://ngrok.com) to receive webhooks during development.
+
+Configure your webhook URL in the sandbox dashboard under **Settings → Webhooks**. You can use tools
+like [webhook.site](https://webhook.site) or [ngrok](https://ngrok.com) to receive webhooks during development.
 
 ## Limitations
 

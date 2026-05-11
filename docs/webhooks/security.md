@@ -6,19 +6,20 @@ description: How to verify Payzink webhook signatures for secure event processin
 
 # Webhook Security
 
-Every webhook notification from Payzink includes a cryptographic signature that you must verify to ensure the request is authentic and hasn't been tampered with.
+Every webhook notification from Payzink includes a cryptographic signature that you must verify to ensure the request is
+authentic and hasn't been tampered with.
 
 ## How signing works
 
 Payzink signs each webhook using your **Secret Key** (`sk_live_...` or `sk_test_...`) and sends the following headers:
 
-| Header | Description |
-|--------|-------------|
-| `X-Payzink-Timestamp` | Unix timestamp (seconds) when the webhook was sent. |
-| `X-Payzink-Signature` | HMAC-SHA256 hex digest of `timestamp + rawPayload`. |
-| `X-Payzink-Signature-Version` | Signature version (currently `v1`). |
-| `X-Payzink-Signature-Algorithm` | Hash algorithm (`sha256`). |
-| `X-Payzink-Signature-Digest` | SHA-256 hash of the raw JSON payload body. |
+| Header                          | Description                                         |
+|---------------------------------|-----------------------------------------------------|
+| `X-Payzink-Timestamp`           | Unix timestamp (seconds) when the webhook was sent. |
+| `X-Payzink-Signature`           | HMAC-SHA256 hex digest of `timestamp + rawPayload`. |
+| `X-Payzink-Signature-Version`   | Signature version (currently `v1`).                 |
+| `X-Payzink-Signature-Algorithm` | Hash algorithm (`sha256`).                          |
+| `X-Payzink-Signature-Digest`    | SHA-256 hash of the raw JSON payload body.          |
 
 ### Signature computation
 
@@ -29,12 +30,14 @@ HMAC-SHA256(timestamp + rawPayload, secretKey)
 ```
 
 Where:
+
 - **`timestamp`** is the value of the `X-Payzink-Timestamp` header (Unix seconds)
 - **`rawPayload`** is the raw JSON request body as a string
 - **`secretKey`** is your merchant Secret Key (the same `sk_live_...` / `sk_test_...` you use for authentication)
 
 :::warning Use the raw body
-You must use the **raw** request body string for signature verification, not a re-serialized version. JSON re-serialization may change key ordering or whitespace, causing signature mismatches.
+You must use the **raw** request body string for signature verification, not a re-serialized version. JSON
+re-serialization may change key ordering or whitespace, causing signature mismatches.
 :::
 
 ## Verification steps
@@ -57,48 +60,48 @@ import TabItem from '@theme/TabItem';
 import crypto from "crypto";
 
 function verifyWebhookSignature(rawPayload, timestamp, signature, secretKey) {
-  const expected = crypto
-    .createHmac("sha256", secretKey)
-    .update(timestamp + rawPayload)
-    .digest("hex");
+    const expected = crypto
+        .createHmac("sha256", secretKey)
+        .update(timestamp + rawPayload)
+        .digest("hex");
 
-  const isValid = crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expected)
-  );
+    const isValid = crypto.timingSafeEqual(
+        Buffer.from(signature),
+        Buffer.from(expected)
+    );
 
-  const now = Math.floor(Date.now() / 1000);
-  const isFresh = Math.abs(now - parseInt(timestamp)) < 300;
+    const now = Math.floor(Date.now() / 1000);
+    const isFresh = Math.abs(now - parseInt(timestamp)) < 300;
 
-  return isValid && isFresh;
+    return isValid && isFresh;
 }
 
 // Express middleware — use express.raw() to get the raw body
 app.post(
-  "/webhooks/payzink",
-  express.raw({ type: "application/json" }),
-  (req, res) => {
-    const timestamp = req.headers["x-payzink-timestamp"];
-    const signature = req.headers["x-payzink-signature"];
-    const rawPayload = req.body.toString();
+    "/webhooks/payzink",
+    express.raw({type: "application/json"}),
+    (req, res) => {
+        const timestamp = req.headers["x-payzink-timestamp"];
+        const signature = req.headers["x-payzink-signature"];
+        const rawPayload = req.body.toString();
 
-    if (
-      !verifyWebhookSignature(
-        rawPayload,
-        timestamp,
-        signature,
-        process.env.SECRET_KEY
-      )
-    ) {
-      return res.status(401).send("Invalid signature");
+        if (
+            !verifyWebhookSignature(
+                rawPayload,
+                timestamp,
+                signature,
+                process.env.SECRET_KEY
+            )
+        ) {
+            return res.status(401).send("Invalid signature");
+        }
+
+        const payload = JSON.parse(rawPayload);
+        console.log(`Event: ${payload.event}, Reference: ${payload.data.reference}`);
+
+        // Process event...
+        res.status(200).send("OK");
     }
-
-    const payload = JSON.parse(rawPayload);
-    console.log(`Event: ${payload.event}, Reference: ${payload.data.reference}`);
-
-    // Process event...
-    res.status(200).send("OK");
-  }
 );
 ```
 
@@ -207,25 +210,28 @@ def handle_webhook():
 </Tabs>
 
 :::danger Always verify signatures
-Never process webhook events without verifying the signature. An attacker could send fake webhook notifications to your endpoint, causing you to fulfill orders that were never paid for.
+Never process webhook events without verifying the signature. An attacker could send fake webhook notifications to your
+endpoint, causing you to fulfill orders that were never paid for.
 :::
 
 ## Additional verification with `X-Payzink-Signature-Digest`
 
-For extra security, you can also verify the `X-Payzink-Signature-Digest` header, which is a plain SHA-256 hash of the raw payload body:
+For extra security, you can also verify the `X-Payzink-Signature-Digest` header, which is a plain SHA-256 hash of the
+raw payload body:
 
 ```javascript
 const payloadDigest = crypto.createHash("sha256").update(rawPayload).digest("hex");
 const receivedDigest = req.headers["x-payzink-signature-digest"];
 
 if (payloadDigest !== receivedDigest) {
-  return res.status(401).send("Payload tampered");
+    return res.status(401).send("Payload tampered");
 }
 ```
 
 ## Replay attack protection
 
-The `X-Payzink-Timestamp` header helps protect against replay attacks. Reject any webhook where the timestamp is more than 5 minutes old:
+The `X-Payzink-Timestamp` header helps protect against replay attacks. Reject any webhook where the timestamp is more
+than 5 minutes old:
 
 ```javascript
 const MAX_AGE_SECONDS = 300; // 5 minutes
@@ -233,7 +239,7 @@ const now = Math.floor(Date.now() / 1000);
 const webhookTimestamp = parseInt(req.headers["x-payzink-timestamp"]);
 
 if (Math.abs(now - webhookTimestamp) > MAX_AGE_SECONDS) {
-  return res.status(401).send("Webhook too old");
+    return res.status(401).send("Webhook too old");
 }
 ```
 

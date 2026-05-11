@@ -40,7 +40,8 @@ window.location.href = result._links.payment.href;
 ```
 
 :::caution Avoid iframes
-Do not embed the payment page in an iframe. Most card networks and banks block payment pages in iframes for security reasons, and 3D Secure challenges will not work properly.
+Do not embed the payment page in an iframe. Most card networks and banks block payment pages in iframes for security
+reasons, and 3D Secure challenges will not work properly.
 :::
 
 ## Handling the redirect back
@@ -64,7 +65,9 @@ https://yoursite.com/payment/cancel?ref=02204c33-a250-45f2-ac73-3714acd6cbb1
 ## Important: Always verify server-side
 
 :::danger Never trust the redirect alone
-The redirect URL can be manipulated by the customer. **Always** call the [Retrieve Transaction Info](/hosted-payment-page/retrieve-transaction) endpoint from your server to verify the payment state before fulfilling an order.
+The redirect URL can be manipulated by the customer. **Always** call
+the [Retrieve Transaction Info](/hosted-payment-page/retrieve-transaction) endpoint from your server to verify the
+payment state before fulfilling an order.
 :::
 
 ```javascript
@@ -91,7 +94,8 @@ app.get("/payment/complete", async (req, res) => {
 
 ## Checkout URL expiry
 
-The checkout URL (`_links.payment.href`) is valid for **30 minutes** after the payment is created. If the customer doesn't complete payment within this window, the transaction expires and a new one must be created.
+The checkout URL (`_links.payment.href`) is valid for **30 minutes** after the payment is created. If the customer
+doesn't complete payment within this window, the transaction expires and a new one must be created.
 
 ## Next steps
 

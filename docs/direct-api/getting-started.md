@@ -179,6 +179,7 @@ curl -X POST https://merchant-dev.payzink.com/api/v1/payment/card \
 ```
 
 When you receive `state: "AWAIT_3DS"`:
+
 1. Redirect the customer to `result._links["payment:3ds"].href`.
 2. The customer authenticates with their bank.
 3. Payzink redirects back to your `_links.callbackUrl`.

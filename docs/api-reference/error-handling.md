@@ -13,6 +13,7 @@ A robust error handling strategy is critical for a reliable payment integration.
 All Payzink API responses include a `meta` object and either a `result` or `error` object:
 
 **Success response:**
+
 ```json
 {
   "meta": { "requestId": "payzink-REQ-..." },
@@ -21,6 +22,7 @@ All Payzink API responses include a `meta` object and either a `result` or `erro
 ```
 
 **Error response:**
+
 ```json
 {
   "meta": { "requestId": "payzink-REQ-..." },
@@ -33,17 +35,18 @@ All Payzink API responses include a `meta` object and either a `result` or `erro
 
 ## Error categories
 
-| Category | HTTP Codes | Payzink Codes | Action |
-|----------|-----------|---------------|--------|
-| **Client errors** | 400, 401, 403, 404, 409, 422 | — | Fix the request |
-| **Payment errors** | 200/422 | `E000000`–`E000013` | Show message to customer |
-| **Fraud blocks** | 200/422 | `F000000`–`F000002` | Do not retry |
-| **Rate limiting** | 429 | — | Retry after delay |
-| **Server errors** | 500, 502, 503 | — | Retry with backoff |
+| Category           | HTTP Codes                   | Payzink Codes       | Action                   |
+|--------------------|------------------------------|---------------------|--------------------------|
+| **Client errors**  | 400, 401, 403, 404, 409, 422 | —                   | Fix the request          |
+| **Payment errors** | 200/422                      | `E000000`–`E000013` | Show message to customer |
+| **Fraud blocks**   | 200/422                      | `F000000`–`F000002` | Do not retry             |
+| **Rate limiting**  | 429                          | —                   | Retry after delay        |
+| **Server errors**  | 500, 502, 503                | —                   | Retry with backoff       |
 
 ## Handling payment states
 
-Check `result.state` to determine the payment outcome. For failed payments, `result.statusCode` and `result.statusMessage` provide details:
+Check `result.state` to determine the payment outcome. For failed payments, `result.statusCode` and
+`result.statusMessage` provide details:
 
 ```javascript
 async function handlePaymentResponse(apiResponse) {
@@ -75,16 +78,16 @@ async function handlePaymentResponse(apiResponse) {
 
 ## Retry strategy
 
-| Error type | Retry? | Strategy |
-|------------|--------|----------|
-| `AWAIT_3DS` | No | Redirect customer to `_links["payment:3ds"].href` |
-| `E000000` (general error) | Yes | Retry once after 2 seconds |
-| `E000001`–`E000003` (3DS errors) | Yes | Ask customer to retry |
-| `E000004`–`E000012` (card errors) | No | Show error, ask for different card |
-| `F000000`–`F000002` (fraud) | **Never** | Block and log |
-| `401` (token expired) | Yes | Get new token, retry once |
-| `429` (rate limit) | Yes | Wait for `Retry-After` header |
-| `500`/`502`/`503` | Yes | Exponential backoff (max 3 attempts) |
+| Error type                        | Retry?    | Strategy                                          |
+|-----------------------------------|-----------|---------------------------------------------------|
+| `AWAIT_3DS`                       | No        | Redirect customer to `_links["payment:3ds"].href` |
+| `E000000` (general error)         | Yes       | Retry once after 2 seconds                        |
+| `E000001`–`E000003` (3DS errors)  | Yes       | Ask customer to retry                             |
+| `E000004`–`E000012` (card errors) | No        | Show error, ask for different card                |
+| `F000000`–`F000002` (fraud)       | **Never** | Block and log                                     |
+| `401` (token expired)             | Yes       | Get new token, retry once                         |
+| `429` (rate limit)                | Yes       | Wait for `Retry-After` header                     |
+| `500`/`502`/`503`                 | Yes       | Exponential backoff (max 3 attempts)              |
 
 ## Exponential backoff
 
@@ -108,7 +111,8 @@ async function callWithRetry(fn, maxRetries = 3) {
 
 ## Using `_links` for available actions
 
-The response `_links` object tells you which actions are available for the current transaction state. Always use these URLs rather than constructing them manually:
+The response `_links` object tells you which actions are available for the current transaction state. Always use these
+URLs rather than constructing them manually:
 
 ```javascript
 const { result } = await response.json();
@@ -125,7 +129,8 @@ if (result._links.capture) {
 ## Idempotency
 
 :::danger Payment status after network errors
-If you receive a network error during a payment request, the payment **may or may not** have been processed. **Always** query [Transaction Info](/direct-api/transaction-info) before retrying.
+If you receive a network error during a payment request, the payment **may or may not** have been processed. **Always**
+query [Transaction Info](/direct-api/transaction-info) before retrying.
 :::
 
 ## Debugging with `requestId`

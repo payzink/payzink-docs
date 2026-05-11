@@ -12,43 +12,43 @@ This page lists all webhook event types that Payzink can send to your endpoint.
 
 ### Authorization events
 
-| Event | Trigger |
-|-------|---------|
-| `PAYMENT.AUTHORISED` | A payment has been successfully authorised (funds reserved). |
-| `PAYMENT.AUTHORISATION.FAILED` | An authorization attempt failed. |
-| `PAYMENT.DECLINED` | A payment was declined by the issuer or acquirer. |
+| Event                          | Trigger                                                      |
+|--------------------------------|--------------------------------------------------------------|
+| `PAYMENT.AUTHORISED`           | A payment has been successfully authorised (funds reserved). |
+| `PAYMENT.AUTHORISATION.FAILED` | An authorization attempt failed.                             |
+| `PAYMENT.DECLINED`             | A payment was declined by the issuer or acquirer.            |
 
 ### Purchase events
 
-| Event | Trigger |
-|-------|---------|
-| `PAYMENT.PURCHASED` | A payment has been successfully purchased (one-step). |
-| `PAYMENT.PURCHASE.FAILED` | A purchase attempt failed. |
+| Event                     | Trigger                                               |
+|---------------------------|-------------------------------------------------------|
+| `PAYMENT.PURCHASED`       | A payment has been successfully purchased (one-step). |
+| `PAYMENT.PURCHASE.FAILED` | A purchase attempt failed.                            |
 
 ### Capture events
 
-| Event | Trigger |
-|-------|---------|
-| `PAYMENT.CAPTURED` | An authorised payment has been captured. |
-| `PAYMENT.CAPTURE.FAILED` | A capture attempt failed. |
-| `PAYMENT.CAPTURE.VOIDED` | A capture has been voided. |
-| `PAYMENT.CAPTURE.VOID.FAILED` | A capture void attempt failed. |
+| Event                         | Trigger                                  |
+|-------------------------------|------------------------------------------|
+| `PAYMENT.CAPTURED`            | An authorised payment has been captured. |
+| `PAYMENT.CAPTURE.FAILED`      | A capture attempt failed.                |
+| `PAYMENT.CAPTURE.VOIDED`      | A capture has been voided.               |
+| `PAYMENT.CAPTURE.VOID.FAILED` | A capture void attempt failed.           |
 
 ### Refund events
 
-| Event | Trigger |
-|-------|---------|
-| `PAYMENT.REFUNDED` | A payment has been fully refunded. |
-| `PAYMENT.REFUND_FAILED` | A refund attempt failed. |
-| `PAYMENT.PARTIALLY.REFUNDED` | A payment has been partially refunded. |
-| `PAYMENT.PARTIALLY.REFUND.FAILED` | A partial refund attempt failed. |
+| Event                             | Trigger                                |
+|-----------------------------------|----------------------------------------|
+| `PAYMENT.REFUNDED`                | A payment has been fully refunded.     |
+| `PAYMENT.REFUND_FAILED`           | A refund attempt failed.               |
+| `PAYMENT.PARTIALLY.REFUNDED`      | A payment has been partially refunded. |
+| `PAYMENT.PARTIALLY.REFUND.FAILED` | A partial refund attempt failed.       |
 
 ### Reversal events
 
-| Event | Trigger |
-|-------|---------|
-| `PAYMENT.REVERSED` | An authorization has been reversed/voided before capture. |
-| `PAYMENT.REVERSAL.FAILED` | A reversal attempt failed. |
+| Event                     | Trigger                                                   |
+|---------------------------|-----------------------------------------------------------|
+| `PAYMENT.REVERSED`        | An authorization has been reversed/voided before capture. |
+| `PAYMENT.REVERSAL.FAILED` | A reversal attempt failed.                                |
 
 ## Payload structure
 
@@ -81,26 +81,27 @@ Every webhook follows the same structure with three top-level keys: `event`, `da
 
 ### `data` fields
 
-| Field | Type | Description                                                 |
-|-------|------|-------------------------------------------------------------|
-| `reference` | `string` | Transaction reference (UUID).                               |
-| `state` | `string` | Current [payment state](/payment-lifecycle/payment-states). |
-| `order.action` | `string` | `PURCHASE`, `SALE`, `AUTH`.                                 |
-| `order.amount` | `integer` | Amount in minor units.                                      |
-| `order.currency` | `string` | ISO 4217 currency code.                                     |
-| `customer.country` | `string` | Customer country (ISO 3166-1 alpha-2).                      |
-| `customer.email` | `string` | Customer email address.                                     |
-| `extra` | `object` | Custom key-value pairs from the original payment request.   |
+| Field              | Type      | Description                                                 |
+|--------------------|-----------|-------------------------------------------------------------|
+| `reference`        | `string`  | Transaction reference (UUID).                               |
+| `state`            | `string`  | Current [payment state](/payment-lifecycle/payment-states). |
+| `order.action`     | `string`  | `PURCHASE`, `SALE`, `AUTH`.                                 |
+| `order.amount`     | `integer` | Amount in minor units.                                      |
+| `order.currency`   | `string`  | ISO 4217 currency code.                                     |
+| `customer.country` | `string`  | Customer country (ISO 3166-1 alpha-2).                      |
+| `customer.email`   | `string`  | Customer email address.                                     |
+| `extra`            | `object`  | Custom key-value pairs from the original payment request.   |
 
-Additional fields may be present depending on the event type and the specific transaction action (e.g., `actionReference` for capture/refund events).
+Additional fields may be present depending on the event type and the specific transaction action (e.g.,
+`actionReference` for capture/refund events).
 
 ### `meta` fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `eventId` | `string` | Unique event identifier. Use for idempotency. |
+| Field         | Type     | Description                                         |
+|---------------|----------|-----------------------------------------------------|
+| `eventId`     | `string` | Unique event identifier. Use for idempotency.       |
 | `triggeredAt` | `string` | ISO 8601 timestamp of when the event was triggered. |
-| `version` | `string` | Payload version (`1.0.0`). |
+| `version`     | `string` | Payload version (`1.0.0`).                          |
 
 ## Example payloads
 

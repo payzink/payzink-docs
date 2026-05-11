@@ -6,7 +6,8 @@ description: Learn how Payzink API authentication works.
 
 # Authentication
 
-Payzink uses **Bearer token authentication**. Every request to the Payzink Merchant API must include a valid access token in the `Authorization` header.
+Payzink uses **Bearer token authentication**. Every request to the Payzink Merchant API must include a valid access
+token in the `Authorization` header.
 
 ## How it works
 
@@ -19,17 +20,17 @@ Payzink uses **Bearer token authentication**. Every request to the Payzink Merch
 
 You get two keys from the Payzink dashboard:
 
-| Key | Format | Purpose |
-|-----|--------|---------|
-| **Publishable Key** | `pk_live_...` / `pk_test_...` | Identifies your merchant account. |
-| **Secret Key** | `sk_live_...` / `sk_test_...` | Authenticates your API requests. Must be kept secret. |
+| Key                 | Format                        | Purpose                                               |
+|---------------------|-------------------------------|-------------------------------------------------------|
+| **Publishable Key** | `pk_live_...` / `pk_test_...` | Identifies your merchant account.                     |
+| **Secret Key**      | `sk_live_...` / `sk_test_...` | Authenticates your API requests. Must be kept secret. |
 
 ## Token lifecycle
 
-| Property | Value |
-|----------|-------|
-| Token type | JWT (JSON Web Token) |
-| Expires in | **300 seconds** (5 minutes) |
+| Property          | Value                                              |
+|-------------------|----------------------------------------------------|
+| Token type        | JWT (JSON Web Token)                               |
+| Expires in        | **300 seconds** (5 minutes)                        |
 | Refresh mechanism | Request a new token before the current one expires |
 
 :::warning Token expiry
@@ -40,10 +41,10 @@ Access tokens are short-lived. Handle `401 Unauthorized` responses by obtaining 
 
 All authenticated API requests must include:
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Authorization` | `Bearer {accessToken}` | Yes |
-| `Content-Type` | `application/json` | Yes (for POST/PUT/DELETE) |
+| Header          | Value                  | Required                  |
+|-----------------|------------------------|---------------------------|
+| `Authorization` | `Bearer {accessToken}` | Yes                       |
+| `Content-Type`  | `application/json`     | Yes (for POST/PUT/DELETE) |
 
 ## Example token caching strategy
 

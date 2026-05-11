@@ -32,18 +32,19 @@ Once onboarded, you'll receive production API credentials:
 4. Store them securely using environment variables or a secrets manager.
 
 :::danger Never hardcode credentials
-Do not hardcode production credentials in your source code. Use environment variables or a secure secrets management service.
+Do not hardcode production credentials in your source code. Use environment variables or a secure secrets management
+service.
 :::
 
 ### 3. Update domains
 
 Replace all sandbox domains with production domains:
 
-| Setting | Sandbox | Production |
-|---------|---------|------------|
-| Merchant API | `https://merchant-dev.payzink.com` | `https://merchant.payzink.com` |
-| Payment Domain | `https://payment-dev.payzink.com` | `https://payment.payzink.com` |
-| Dashboard | `https://console-dev.payzink.com` | `https://console.payzink.com` |
+| Setting        | Sandbox                            | Production                     |
+|----------------|------------------------------------|--------------------------------|
+| Merchant API   | `https://merchant-dev.payzink.com` | `https://merchant.payzink.com` |
+| Payment Domain | `https://payment-dev.payzink.com`  | `https://payment.payzink.com`  |
+| Dashboard      | `https://console-dev.payzink.com`  | `https://console.payzink.com`  |
 
 ### 4. Configure webhooks
 
@@ -54,13 +55,13 @@ Replace all sandbox domains with production domains:
 
 ### 5. Security checklist
 
-| Requirement | Details |
-|---|---|
-| **HTTPS** | All communication must use TLS 1.2 or higher |
-| **Credential storage** | API keys stored in environment variables or secrets manager |
-| **Webhook verification** | Verify webhook signatures on every notification |
-| **PCI DSS** | HPP: SAQ-A compliant. Direct API: SAQ-D compliant |
-| **IP whitelisting** | Optional — restrict API access to known IP addresses |
+| Requirement              | Details                                                     |
+|--------------------------|-------------------------------------------------------------|
+| **HTTPS**                | All communication must use TLS 1.2 or higher                |
+| **Credential storage**   | API keys stored in environment variables or secrets manager |
+| **Webhook verification** | Verify webhook signatures on every notification             |
+| **PCI DSS**              | HPP: SAQ-A compliant. Direct API: SAQ-D compliant           |
+| **IP whitelisting**      | Optional — restrict API access to known IP addresses        |
 
 ### 6. Integration verification
 

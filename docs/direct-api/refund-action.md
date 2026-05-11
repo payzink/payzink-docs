@@ -12,27 +12,27 @@ Refund a specific action on a transaction (e.g., a specific capture).
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/action/{action_reference}/refund` |
-| Production | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/action/{action_reference}/refund` |
+| Environment | URL                                                                                                        |
+|-------------|------------------------------------------------------------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/action/{action_reference}/refund` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/action/{action_reference}/refund`     |
 
 ## Request
 
 ### Path parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `reference` | `string` | Yes | The transaction reference. |
-| `action_reference` | `string` | Yes | The action reference to refund. |
+| Parameter          | Type     | Required | Description                     |
+|--------------------|----------|----------|---------------------------------|
+| `reference`        | `string` | Yes      | The transaction reference.      |
+| `action_reference` | `string` | Yes      | The action reference to refund. |
 
 ### Body parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `amount` | `object` | Yes | Refund amount. |
-| `amount.currencyCode` | `string` | Yes | Must match the action currency. |
-| `amount.value` | `string\|integer` | Yes | Amount to refund. Must be ≤ action amount. |
+| Parameter             | Type              | Required | Description                                |
+|-----------------------|-------------------|----------|--------------------------------------------|
+| `amount`              | `object`          | Yes      | Refund amount.                             |
+| `amount.currencyCode` | `string`          | Yes      | Must match the action currency.            |
+| `amount.value`        | `string\|integer` | Yes      | Amount to refund. Must be ≤ action amount. |
 
 ### Example
 

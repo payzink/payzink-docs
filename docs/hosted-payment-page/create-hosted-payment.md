@@ -12,34 +12,34 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/hosted` |
-| Production | `https://merchant.payzink.com/api/v1/payment/hosted` |
+| Environment | URL                                                      |
+|-------------|----------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/hosted` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/hosted`     |
 
 ## Request
 
 ### Headers
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Authorization` | `Bearer {accessToken}` | Yes |
-| `Content-Type` | `application/json` | Yes |
+| Header          | Value                  | Required |
+|-----------------|------------------------|----------|
+| `Authorization` | `Bearer {accessToken}` | Yes      |
+| `Content-Type`  | `application/json`     | Yes      |
 
 ### Body parameters
 
-| Parameter | Type | Required | Description                                                                |
-|-----------|------|----------|----------------------------------------------------------------------------|
-| `order` | `object` | Yes | Order details.                                                             |
-| `order.action` | `string` | Yes | `PURCHASE` for immediate charge, `AUTH` for pre-authorization.             |
-| `order.amount` | `object` | Yes | Payment amount.                                                            |
-| `order.amount.currencyCode` | `string` | Yes | ISO 4217 currency code (e.g., `AED`, `USD`, `EUR`).                        |
-| `order.amount.value` | `integer` | Yes | Amount in minor units (e.g., `5000` = 50.00).                              |
-| `customer` | `object` | No | Customer details.                                                          |
-| `customer.email` | `string` | No | Customer's email address.                                                  |
-| `extra` | `object` | No | Custom key-value pairs for your internal use. Stored with the transaction. |
-| `_links` | `object` | No | Callback and notification URLs.                                            |
-| `_links.notificationUrl` | `string` | No | Webhook URL to receive payment notifications.                              |
+| Parameter                   | Type      | Required | Description                                                                |
+|-----------------------------|-----------|----------|----------------------------------------------------------------------------|
+| `order`                     | `object`  | Yes      | Order details.                                                             |
+| `order.action`              | `string`  | Yes      | `PURCHASE` for immediate charge, `AUTH` for pre-authorization.             |
+| `order.amount`              | `object`  | Yes      | Payment amount.                                                            |
+| `order.amount.currencyCode` | `string`  | Yes      | ISO 4217 currency code (e.g., `AED`, `USD`, `EUR`).                        |
+| `order.amount.value`        | `integer` | Yes      | Amount in minor units (e.g., `5000` = 50.00).                              |
+| `customer`                  | `object`  | No       | Customer details.                                                          |
+| `customer.email`            | `string`  | No       | Customer's email address.                                                  |
+| `extra`                     | `object`  | No       | Custom key-value pairs for your internal use. Stored with the transaction. |
+| `_links`                    | `object`  | No       | Callback and notification URLs.                                            |
+| `_links.notificationUrl`    | `string`  | No       | Webhook URL to receive payment notifications.                              |
 
 ### Example request
 
@@ -98,16 +98,16 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `meta.requestId` | `string` | Unique identifier for this API request. |
-| `result.reference` | `string` | Unique transaction reference (UUID). Use this to check status. |
-| `result.mid` | `integer` | Merchant ID. |
-| `result.state` | `string` | Initial state. Always `STARTED`. |
-| `result.merchantName` | `string` | Your registered merchant name. |
-| `result.order` | `object` | Echo of the order details. |
-| `result._links.self.href` | `string` | URL to retrieve transaction info. |
-| `result._links.payment.href` | `string` | **Checkout URL** — redirect the customer here. |
+| Field                        | Type      | Description                                                    |
+|------------------------------|-----------|----------------------------------------------------------------|
+| `meta.requestId`             | `string`  | Unique identifier for this API request.                        |
+| `result.reference`           | `string`  | Unique transaction reference (UUID). Use this to check status. |
+| `result.mid`                 | `integer` | Merchant ID.                                                   |
+| `result.state`               | `string`  | Initial state. Always `STARTED`.                               |
+| `result.merchantName`        | `string`  | Your registered merchant name.                                 |
+| `result.order`               | `object`  | Echo of the order details.                                     |
+| `result._links.self.href`    | `string`  | URL to retrieve transaction info.                              |
+| `result._links.payment.href` | `string`  | **Checkout URL** — redirect the customer here.                 |
 
 ### Error — `400 Bad Request`
 

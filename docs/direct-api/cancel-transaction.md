@@ -12,24 +12,24 @@ Cancel a transaction before it has been captured/settled. This reverses the auth
 
 ## Endpoint
 
-| Environment | URL |
-|-------------|-----|
-| Sandbox | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/cancel` |
-| Production | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/cancel` |
+| Environment | URL                                                                              |
+|-------------|----------------------------------------------------------------------------------|
+| Sandbox     | `https://merchant-dev.payzink.com/api/v1/payment/transaction/{reference}/cancel` |
+| Production  | `https://merchant.payzink.com/api/v1/payment/transaction/{reference}/cancel`     |
 
 ## Request
 
 ### Path parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `reference` | `string` | Yes | The transaction reference. |
+| Parameter   | Type     | Required | Description                |
+|-------------|----------|----------|----------------------------|
+| `reference` | `string` | Yes      | The transaction reference. |
 
 ### Headers
 
-| Header | Value | Required |
-|--------|-------|----------|
-| `Authorization` | `Bearer {accessToken}` | Yes |
+| Header          | Value                  | Required |
+|-----------------|------------------------|----------|
+| `Authorization` | `Bearer {accessToken}` | Yes      |
 
 No request body is required.
 
