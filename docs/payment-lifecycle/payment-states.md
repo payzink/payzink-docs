@@ -28,12 +28,12 @@ STARTED ──► AWAIT_3DS ──► PURCHASED
 ### Authorization & Capture flow
 
 ```
-STARTED ──► AWAIT_3DS ──► AUTHORISED ──► CAPTURED
+STARTED ──► AWAIT_3DS(KYC) ──► AUTHORISED ──► CAPTURED
    │            │              │              │
    │            ▼              ▼              ├──► PARTIALLY_REFUNDED
-   │          FAILED        REVERSED         │
-   ▼                                         ▼
- FAILED / CANCELED                       REFUNDED
+   │          FAILED        REVERSED          │
+   ▼                                          ▼
+ FAILED / CANCELED                        REFUNDED
 
                     AUTHORISED ──► PARTIALLY_CAPTURED ──► REFUNDED
                                           │
@@ -47,6 +47,7 @@ STARTED ──► AWAIT_3DS ──► AUTHORISED ──► CAPTURED
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **`STARTED`**            | The payment process has been initiated. The customer has started the checkout flow, but no authorization or 3D Secure step has been executed yet.                  |
 | **`AWAIT_3DS`**          | Awaiting 3D Secure authentication. The customer has been redirected for 3D Secure verification, and the transaction will proceed once authentication is completed. |
+| **`AWAIT_KYC`**          | Awaiting KYC verify. The customer has been redirected for KYC verification, and the transaction will proceed once authentication is completed.                     |
 | **`AUTHORISED`**         | The payment has been authorised (funds reserved). The issuer has approved the authorization request, but the funds have not yet been captured/settled.             |
 | **`PURCHASED`**          | The payment has been successfully completed. Funds have been authorised and immediately captured in a single step.                                                 |
 | **`CAPTURED`**           | The payment has been captured (settled) successfully. Previously authorised funds have now been collected by the merchant.                                         |
@@ -64,6 +65,7 @@ STARTED ──► AWAIT_3DS ──► AUTHORISED ──► CAPTURED
 |----------------------|---------|-----------------|--------|------------------|---------------|
 | `STARTED`            | —       | —               | —      | —                | —             |
 | `AWAIT_3DS`          | —       | —               | —      | —                | —             |
+| `AWAIT_KYC`          | —       | —               | —      | Yes              | —             |
 | `AUTHORISED`         | Yes     | Yes             | —      | —                | —             |
 | `PURCHASED`          | —       | —               | Yes    | —                | —             |
 | `CAPTURED`           | —       | —               | Yes    | Yes (pre-settle) | Yes           |
@@ -77,28 +79,33 @@ STARTED ──► AWAIT_3DS ──► AUTHORISED ──► CAPTURED
 
 ## State transition triggers
 
-| From State           | To State             | Trigger                                  |
-|----------------------|----------------------|------------------------------------------|
-| `STARTED`            | `AWAIT_3DS`          | 3DS authentication required              |
-| `STARTED`            | `AUTHORISED`         | Successful authorization (no 3DS)        |
-| `STARTED`            | `PURCHASED`          | Successful purchase (no 3DS)             |
-| `STARTED`            | `FAILED`             | Payment declined or error                |
-| `STARTED`            | `CANCELED`           | Customer or merchant cancelled           |
-| `AWAIT_3DS`          | `AUTHORISED`         | 3DS authentication succeeded (authorize) |
-| `AWAIT_3DS`          | `PURCHASED`          | 3DS authentication succeeded (purchase)  |
-| `AWAIT_3DS`          | `FAILED`             | 3DS authentication failed or timed out   |
-| `AUTHORISED`         | `CAPTURED`           | Full capture                             |
-| `AUTHORISED`         | `PARTIALLY_CAPTURED` | Partial capture                          |
-| `AUTHORISED`         | `REVERSED`           | Authorization reversed/voided            |
-| `PURCHASED`          | `REFUNDED`           | Full refund                              |
-| `PURCHASED`          | `PARTIALLY_REFUNDED` | Partial refund                           |
-| `CAPTURED`           | `REFUNDED`           | Full refund                              |
-| `CAPTURED`           | `PARTIALLY_REFUNDED` | Partial refund                           |
-| `CAPTURED`           | `VOIDED`             | Capture cancelled before settlement      |
-| `PARTIALLY_CAPTURED` | `CAPTURED`           | Additional capture                       |
-| `PARTIALLY_CAPTURED` | `REFUNDED`           | Full refund of captured amount           |
-| `PARTIALLY_CAPTURED` | `PARTIALLY_REFUNDED` | Partial refund                           |
-| `PARTIALLY_REFUNDED` | `REFUNDED`           | Remaining amount refunded                |
+| From State           | To State             | Trigger                                            |
+|----------------------|----------------------|----------------------------------------------------|
+| `STARTED`            | `AWAIT_3DS`          | 3DS authentication required                        |
+| `STARTED`            | `AUTHORISED`         | Successful authorization (no 3DS)                  |
+| `STARTED`            | `PURCHASED`          | Successful purchase (no 3DS)                       |
+| `STARTED`            | `FAILED`             | Payment declined or error                          |
+| `STARTED`            | `CANCELED`           | Customer or merchant cancelled                     |
+| `AWAIT_3DS`          | `AUTHORISED`         | 3DS authentication succeeded (authorize)           |
+| `AWAIT_3DS`          | `PURCHASED`          | 3DS authentication succeeded (purchase)            |
+| `AWAIT_3DS`          | `AWAIT_KYC`          | 3DS authentication succeeded (redirect KYC)        |
+| `AWAIT_3DS`          | `FAILED`             | 3DS authentication failed or timed out             |
+| `AUTHORISED`         | `CAPTURED`           | Full capture                                       |
+| `AUTHORISED`         | `PARTIALLY_CAPTURED` | Partial capture                                    |
+| `AUTHORISED`         | `REVERSED`           | Authorization reversed/voided                      |
+| `PURCHASED`          | `REFUNDED`           | Full refund                                        |
+| `PURCHASED`          | `PARTIALLY_REFUNDED` | Partial refund                                     |
+| `CAPTURED`           | `REFUNDED`           | Full refund                                        |
+| `CAPTURED`           | `PARTIALLY_REFUNDED` | Partial refund                                     |
+| `CAPTURED`           | `VOIDED`             | Capture cancelled before settlement                |
+| `PARTIALLY_CAPTURED` | `CAPTURED`           | Additional capture                                 |
+| `PARTIALLY_CAPTURED` | `REFUNDED`           | Full refund of captured amount                     |
+| `PARTIALLY_CAPTURED` | `PARTIALLY_REFUNDED` | Partial refund                                     |
+| `PARTIALLY_REFUNDED` | `REFUNDED`           | Remaining amount refunded                          |
+| `AWAIT_KYC`          | `PURCHASED`          | KYC verify succeded. Transaction purchased         |
+| `AWAIT_KYC`          | `CAPTURED`           | KYC verify succeded. Transaction captured          |
+| `AWAIT_KYC`          | `AUTHORISED`         | KYC verify succeded. Transaction authorised        |
+| `AWAIT_KYC`          | `FAILED`             | KYC verify failed or time out. Transaction voided. |
 
 ## Using states in your integration
 
@@ -111,27 +118,29 @@ You can use these states to:
 
 ```javascript
 function getCustomerMessage(state) {
-  switch (state) {
-    case "PURCHASED":
-    case "CAPTURED":
-      return "Payment successful! Your order is being processed.";
-    case "AUTHORISED":
-      return "Payment authorized. Your card will be charged when the order ships.";
-    case "AWAIT_3DS":
-      return "Please complete the verification with your bank.";
-    case "PARTIALLY_REFUNDED":
-      return "A partial refund has been processed to your card.";
-    case "REFUNDED":
-      return "Your payment has been fully refunded.";
-    case "REVERSED":
-    case "VOIDED":
-    case "CANCELED":
-      return "Your payment has been cancelled.";
-    case "FAILED":
-      return "Payment failed. Please try again or use a different payment method.";
-    default:
-      return "Your payment is being processed.";
-  }
+    switch (state) {
+        case "PURCHASED":
+        case "CAPTURED":
+            return "Payment successful! Your order is being processed.";
+        case "AUTHORISED":
+            return "Payment authorized. Your card will be charged when the order ships.";
+        case "AWAIT_3DS":
+            return "Please complete the verification with your bank.";
+        case "AWAIT_KYC":
+            return "Please complete the KYC verification.";
+        case "PARTIALLY_REFUNDED":
+            return "A partial refund has been processed to your card.";
+        case "REFUNDED":
+            return "Your payment has been fully refunded.";
+        case "REVERSED":
+        case "VOIDED":
+        case "CANCELED":
+            return "Your payment has been cancelled.";
+        case "FAILED":
+            return "Payment failed. Please try again or use a different payment method.";
+        default:
+            return "Your payment is being processed.";
+    }
 }
 ```
 

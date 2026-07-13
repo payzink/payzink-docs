@@ -128,16 +128,16 @@ Redirect the customer to the 3DS URL on the **payment domain**:
 
 ```javascript
 app.post("/checkout", async (req, res) => {
-  const { result } = await createCardPayment(req.body);
+    const {result} = await createCardPayment(req.body);
 
-  if (result.state === "AWAIT_3DS") {
-    req.session.paymentReference = result.reference;
-    res.redirect(result._links["payment:3ds"].href);
-  } else if (result.state === "PURCHASED") {
-    res.redirect("/payment/success");
-  } else {
-    res.redirect("/payment/failed");
-  }
+    if (result.state === "AWAIT_3DS") {
+        req.session.paymentReference = result.reference;
+        res.redirect(result._links["payment:3ds"].href);
+    } else if (result.state === "PURCHASED") {
+        res.redirect("/payment/success");
+    } else {
+        res.redirect("/payment/failed");
+    }
 });
 ```
 
@@ -147,23 +147,23 @@ After 3DS authentication, the customer is redirected to your `_links.callbackUrl
 
 ```javascript
 app.get("/3ds-callback", async (req, res) => {
-  const reference = req.query.ref || req.session.paymentReference;
-  const accessToken = await getAccessToken();
+    const reference = req.query.ref || req.session.paymentReference;
+    const accessToken = await getAccessToken();
 
-  const response = await fetch(
-    `https://merchant-dev.payzink.com/api/v1/payment/transaction/${reference}/info`,
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-  );
+    const response = await fetch(
+        `https://merchant-dev.payzink.com/api/v1/payment/transaction/${reference}/info`,
+        {headers: {Authorization: `Bearer ${accessToken}`}}
+    );
 
-  const { result } = await response.json();
+    const {result} = await response.json();
 
-  if (result.state === "PURCHASED" || result.state === "AUTHORISED") {
-    res.render("success", { payment: result });
-  } else if (result.state === "FAILED") {
-    res.render("failed", { message: result.statusMessage });
-  } else {
-    res.render("pending", { payment: result });
-  }
+    if (result.state === "PURCHASED" || result.state === "AUTHORISED") {
+        res.render("success", {payment: result});
+    } else if (result.state === "FAILED") {
+        res.render("failed", {message: result.statusMessage});
+    } else {
+        res.render("pending", {payment: result});
+    }
 });
 ```
 

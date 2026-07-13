@@ -15,8 +15,8 @@ After creating a hosted payment, redirect your customer to the checkout URL prov
 ```javascript
 // Express.js
 app.post("/checkout", async (req, res) => {
-  const { result } = await createHostedPayment(req.body);
-  res.redirect(303, result._links.payment.href);
+    const {result} = await createHostedPayment(req.body);
+    res.redirect(303, result._links.payment.href);
 });
 ```
 
@@ -32,10 +32,10 @@ exit;
 
 ```javascript
 const response = await fetch("/api/create-payment", {
-  method: "POST",
-  body: JSON.stringify(paymentData),
+    method: "POST",
+    body: JSON.stringify(paymentData),
 });
-const { result } = await response.json();
+const {result} = await response.json();
 window.location.href = result._links.payment.href;
 ```
 
@@ -72,23 +72,24 @@ payment state before fulfilling an order.
 
 ```javascript
 app.get("/payment/complete", async (req, res) => {
-  const reference = req.query.ref;
-  const { result } = await getTransactionInfo(reference);
+    const reference = req.query.ref;
+    const {result} = await getTransactionInfo(reference);
 
-  switch (result.state) {
-    case "PURCHASED":
-      await fulfillOrder(reference);
-      res.render("success", { payment: result });
-      break;
-    case "AUTHORISED":
-      res.render("authorized", { payment: result });
-      break;
-    case "FAILED":
-      res.render("failed", { payment: result });
-      break;
-    default:
-      res.render("pending", { payment: result });
-  }
+    switch (result.state) {
+        case "PURCHASED":
+        case "CAPTURED":
+            await fulfillOrder(reference);
+            res.render("success", {payment: result});
+            break;
+        case "AUTHORISED":
+            res.render("authorized", {payment: result});
+            break;
+        case "FAILED":
+            res.render("failed", {payment: result});
+            break;
+        default:
+            res.render("pending", {payment: result});
+    }
 });
 ```
 

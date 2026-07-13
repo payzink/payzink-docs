@@ -16,8 +16,12 @@ All Payzink API responses include a `meta` object and either a `result` or `erro
 
 ```json
 {
-  "meta": { "requestId": "payzink-REQ-..." },
-  "result": { ... }
+  "meta": {
+    "requestId": "payzink-REQ-..."
+  },
+  "result": {
+    ...
+  }
 }
 ```
 
@@ -25,7 +29,9 @@ All Payzink API responses include a `meta` object and either a `result` or `erro
 
 ```json
 {
-  "meta": { "requestId": "payzink-REQ-..." },
+  "meta": {
+    "requestId": "payzink-REQ-..."
+  },
   "error": {
     "code": "INVALID_AMOUNT",
     "message": "Amount value must be greater than zero."
@@ -50,29 +56,30 @@ Check `result.state` to determine the payment outcome. For failed payments, `res
 
 ```javascript
 async function handlePaymentResponse(apiResponse) {
-  const { result } = apiResponse;
+    const {result} = apiResponse;
 
-  switch (result.state) {
-    case "PURCHASED":
-    case "AUTHORISED":
-      return { success: true, reference: result.reference };
+    switch (result.state) {
+        case "PURCHASED":
+        case "CAPTURED":
+        case "AUTHORISED":
+            return {success: true, reference: result.reference};
 
-    case "AWAIT_3DS":
-      return {
-        requires3DS: true,
-        redirectUrl: result._links["payment:3ds"].href,
-      };
+        case "AWAIT_3DS":
+            return {
+                requires3DS: true,
+                redirectUrl: result._links["payment:3ds"].href,
+            };
 
-    case "FAILED":
-      if (result.statusCode?.startsWith("F")) {
-        logFraudAttempt(result.reference, result.statusCode);
-        return { success: false, error: "Transaction blocked for security reasons." };
-      }
-      return { success: false, error: result.statusMessage };
+        case "FAILED":
+            if (result.statusCode?.startsWith("F")) {
+                logFraudAttempt(result.reference, result.statusCode);
+                return {success: false, error: "Transaction blocked for security reasons."};
+            }
+            return {success: false, error: result.statusMessage};
 
-    default:
-      return { success: false, error: "Unexpected payment state." };
-  }
+        default:
+            return {success: false, error: "Unexpected payment state."};
+    }
 }
 ```
 
@@ -83,7 +90,8 @@ async function handlePaymentResponse(apiResponse) {
 | `AWAIT_3DS`                       | No        | Redirect customer to `_links["payment:3ds"].href` |
 | `E000000` (general error)         | Yes       | Retry once after 2 seconds                        |
 | `E000001`–`E000003` (3DS errors)  | Yes       | Ask customer to retry                             |
-| `E000004`–`E000012` (card errors) | No        | Show error, ask for different card                |
+| `E000004`–`E000015` (card errors) | No        | Show error, ask for different card                |
+| `E000016` (velocity errors)       | No        | Try again in 24 hours                             |
 | `F000000`–`F000002` (fraud)       | **Never** | Block and log                                     |
 | `401` (token expired)             | Yes       | Get new token, retry once                         |
 | `429` (rate limit)                | Yes       | Wait for `Retry-After` header                     |
@@ -93,19 +101,19 @@ async function handlePaymentResponse(apiResponse) {
 
 ```javascript
 async function callWithRetry(fn, maxRetries = 3) {
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      const response = await fn();
-      if (response.ok || ![500, 502, 503].includes(response.status)) {
-        return response;
-      }
-      if (attempt === maxRetries) return response;
-    } catch (networkError) {
-      if (attempt === maxRetries) throw networkError;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+            const response = await fn();
+            if (response.ok || ![500, 502, 503].includes(response.status)) {
+                return response;
+            }
+            if (attempt === maxRetries) return response;
+        } catch (networkError) {
+            if (attempt === maxRetries) throw networkError;
+        }
+        const delay = Math.min(1000 * Math.pow(2, attempt), 30000);
+        await new Promise((r) => setTimeout(r, delay));
     }
-    const delay = Math.min(1000 * Math.pow(2, attempt), 30000);
-    await new Promise((r) => setTimeout(r, delay));
-  }
 }
 ```
 
@@ -115,14 +123,14 @@ The response `_links` object tells you which actions are available for the curre
 URLs rather than constructing them manually:
 
 ```javascript
-const { result } = await response.json();
+const {result} = await response.json();
 
 if (result._links.refund) {
-  console.log("Refund available at:", result._links.refund.href);
+    console.log("Refund available at:", result._links.refund.href);
 }
 
 if (result._links.capture) {
-  console.log("Capture available at:", result._links.capture.href);
+    console.log("Capture available at:", result._links.capture.href);
 }
 ```
 

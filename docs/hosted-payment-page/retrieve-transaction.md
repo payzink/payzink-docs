@@ -168,18 +168,18 @@ curl -X GET https://merchant-dev.payzink.com/api/v1/payment/transaction/{referen
 
 ```javascript
 const response = await fetch(
-  `https://merchant-dev.payzink.com/api/v1/payment/transaction/${reference}/info`,
-  {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  }
+    `https://merchant-dev.payzink.com/api/v1/payment/transaction/${reference}/info`,
+    {
+        headers: {Authorization: `Bearer ${accessToken}`},
+    }
 );
 
-const { result } = await response.json();
+const {result} = await response.json();
 
 if (result.state === "PURCHASED" || result.state === "AUTHORISED") {
-  console.log("Payment successful:", result.reference);
+    console.log("Payment successful:", result.reference);
 } else {
-  console.log("Payment failed:", result.state, result.statusMessage);
+    console.log("Payment failed:", result.state, result.statusMessage);
 }
 ```
 

@@ -36,10 +36,15 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
 | `order.amount.currencyCode` | `string`  | Yes      | ISO 4217 currency code (e.g., `AED`, `USD`, `EUR`).                        |
 | `order.amount.value`        | `integer` | Yes      | Amount in minor units (e.g., `5000` = 50.00).                              |
 | `customer`                  | `object`  | No       | Customer details.                                                          |
-| `customer.email`            | `string`  | No       | Customer's email address.                                                  |
+| `customer.email`            | `string`  | Yes      | Customer's email address.                                                  |
+| `customer.firstName`        | `string`  | No       | Customer first name.                                                       |
+| `customer.lastName`         | `string`  | No       | Customer last name.                                                        |
+| `customer.zipCode`          | `string`  | No       | Customer's zip code.                                                       |
+| `customer.ip`               | `string`  | No       | Customer's IP address.                                                     |
 | `extra`                     | `object`  | No       | Custom key-value pairs for your internal use. Stored with the transaction. |
 | `_links`                    | `object`  | No       | Callback and notification URLs.                                            |
 | `_links.notificationUrl`    | `string`  | No       | Webhook URL to receive payment notifications.                              |
+| `_links.callbackUrl`        | `string`  | No       | Callback URL to after 3DS redirect page.                                   |
 
 ### Example request
 
@@ -53,14 +58,18 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
     }
   },
   "customer": {
-    "email": "customer@example.com"
+    "email": "customer@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "zipCode": "PAYZINK-001"
   },
   "extra": {
     "orderId": "MY-ORDER-001",
     "customField": "any-value"
   },
   "_links": {
-    "notificationUrl": "https://yoursite.com/webhooks/payzink"
+    "notificationUrl": "https://yoursite.com/webhooks/payzink",
+    "callbackUrl": "https://yoursite.com/callback/payzink"
   }
 }
 ```
@@ -147,7 +156,8 @@ curl -X POST https://merchant-dev.payzink.com/api/v1/payment/hosted \
       "email": "customer@example.com"
     },
     "_links": {
-      "notificationUrl": "https://yoursite.com/webhooks/payzink"
+      "notificationUrl": "https://yoursite.com/webhooks/payzink",
+      "callbackUrl": "https://yoursite.com/callback/payzink"
     }
   }'
 ```
@@ -157,25 +167,28 @@ curl -X POST https://merchant-dev.payzink.com/api/v1/payment/hosted \
 
 ```javascript
 const response = await fetch(
-  "https://merchant-dev.payzink.com/api/v1/payment/hosted",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      order: {
-        action: "PURCHASE",
-        amount: { currencyCode: "USD", value: 2500 },
-      },
-      customer: { email: "customer@example.com" },
-      _links: { notificationUrl: "https://yoursite.com/webhooks/payzink" },
-    }),
-  }
+    "https://merchant-dev.payzink.com/api/v1/payment/hosted",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+            order: {
+                action: "PURCHASE",
+                amount: {currencyCode: "USD", value: 2500},
+            },
+            customer: {email: "customer@example.com"},
+            _links: {
+                notificationUrl: "https://yoursite.com/webhooks/payzink",
+                callbackUrl: "https://yoursite.com/callback/payzink"
+            },
+        }),
+    }
 );
 
-const { result } = await response.json();
+const {result} = await response.json();
 const checkoutUrl = result._links.payment.href;
 console.log("Redirect to:", checkoutUrl);
 ```
@@ -198,7 +211,10 @@ curl_setopt_array($ch, [
             'amount' => ['currencyCode' => 'USD', 'value' => 2500],
         ],
         'customer' => ['email' => 'customer@example.com'],
-        '_links' => ['notificationUrl' => 'https://yoursite.com/webhooks/payzink'],
+        '_links' => [
+          'notificationUrl' => 'https://yoursite.com/webhooks/payzink',
+          'callbackUrl' => 'https://yoursite.com/callback/payzink'
+        ],
     ]),
 ]);
 
@@ -228,7 +244,10 @@ response = requests.post(
             "amount": {"currencyCode": "USD", "value": 2500},
         },
         "customer": {"email": "customer@example.com"},
-        "_links": {"notificationUrl": "https://yoursite.com/webhooks/payzink"},
+        "_links": {
+          "notificationUrl": "https://yoursite.com/webhooks/payzink",
+          "callbackUrl": "https://yoursite.com/callback/payzink"
+        },
     },
 )
 
