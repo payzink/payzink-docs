@@ -43,10 +43,12 @@ Process a credit or debit card payment. Supports both immediate purchase and pre
 | `payment.cvv`               | `string`  | Yes      | 3-digit CVV (4 digits for AMEX).                                                                  |
 | `payment.cardHolderName`    | `string`  | Yes      | Name as printed on the card.                                                                      |
 | `customer`                  | `object`  | No       | Customer details.                                                                                 |
-| `customer.email`            | `string`  | No       | Customer's email address.                                                                         |
-| `customer.ip`               | `string`  | No       | Customer's IP address (recommended for fraud prevention).                                         |
+| `customer.email`            | `string`  | Yes      | Customer's email address.                                                                         |
 | `customer.phoneNumber`      | `string`  | No       | Customer's phone number with country code.                                                        |
+| `customer.firstName`        | `string`  | No       | Customer first name.                                                                              |
+| `customer.lastName`         | `string`  | No       | Customer last name.                                                                               |
 | `customer.zipCode`          | `string`  | No       | Customer's postal/ZIP code.                                                                       |
+| `customer.ip`               | `string`  | No       | Customer's IP address (recommended for fraud prevention).                                         |
 | `extra`                     | `object`  | No       | Custom key-value pairs for your internal use.                                                     |
 | `_links`                    | `object`  | No       | Callback and notification URLs.                                                                   |
 | `_links.callbackUrl`        | `string`  | No       | URL to redirect the customer after 3DS authentication.                                            |
@@ -74,7 +76,9 @@ Process a credit or debit card payment. Supports both immediate purchase and pre
     "email": "john@example.com",
     "ip": "81.214.125.134",
     "phoneNumber": "+905551234567",
-    "zipCode": "34517"
+    "zipCode": "34517",
+    "firstName": "John",
+    "lastName": "Doe"
   },
   "extra": {
     "orderId": "MY-ORDER-001"
@@ -311,43 +315,43 @@ curl -X POST https://merchant-dev.payzink.com/api/v1/payment/card \
 
 ```javascript
 const response = await fetch(
-  "https://merchant-dev.payzink.com/api/v1/payment/card",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      order: {
-        action: "PURCHASE",
-        amount: { currencyCode: "EUR", value: 5000 },
-      },
-      payment: {
-        pan: "4111111111111111",
-        expiryYear: "2038",
-        expiryMonth: "05",
-        cvv: "123",
-        cardHolderName: "John Doe",
-      },
-      customer: { email: "john@example.com", ip: "81.214.125.134" },
-      _links: {
-        callbackUrl: "https://yoursite.com/3ds-callback",
-        notificationUrl: "https://yoursite.com/webhooks/payzink",
-      },
-    }),
-  }
+    "https://merchant-dev.payzink.com/api/v1/payment/card",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+            order: {
+                action: "PURCHASE",
+                amount: {currencyCode: "EUR", value: 5000},
+            },
+            payment: {
+                pan: "4111111111111111",
+                expiryYear: "2038",
+                expiryMonth: "05",
+                cvv: "123",
+                cardHolderName: "John Doe",
+            },
+            customer: {email: "john@example.com", ip: "81.214.125.134"},
+            _links: {
+                callbackUrl: "https://yoursite.com/3ds-callback",
+                notificationUrl: "https://yoursite.com/webhooks/payzink",
+            },
+        }),
+    }
 );
 
-const { result } = await response.json();
+const {result} = await response.json();
 
 if (result.state === "AWAIT_3DS") {
-  const threeDsUrl = result._links["payment:3ds"].href;
-  console.log("Redirect to 3DS:", threeDsUrl);
+    const threeDsUrl = result._links["payment:3ds"].href;
+    console.log("Redirect to 3DS:", threeDsUrl);
 } else if (result.state === "PURCHASED") {
-  console.log("Payment successful:", result.reference);
+    console.log("Payment successful:", result.reference);
 } else {
-  console.log("Payment failed:", result.state, result.statusMessage);
+    console.log("Payment failed:", result.state, result.statusMessage);
 }
 ```
 

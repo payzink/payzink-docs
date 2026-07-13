@@ -37,9 +37,10 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
 | `order.amount.value`        | `integer` | Yes      | Amount in minor units (e.g., `5000` = 50.00).                              |
 | `customer`                  | `object`  | No       | Customer details.                                                          |
 | `customer.email`            | `string`  | Yes      | Customer's email address.                                                  |
+| `customer.phoneNumber`      | `string`  | No       | Customer phone number.                                                     |
 | `customer.firstName`        | `string`  | No       | Customer first name.                                                       |
 | `customer.lastName`         | `string`  | No       | Customer last name.                                                        |
-| `customer.zipCode`          | `string`  | No       | Customer's zip code.                                                       |
+| `customer.zipCode`          | `string`  | No       | Customer's postal/ZIP code.                                                |
 | `customer.ip`               | `string`  | No       | Customer's IP address.                                                     |
 | `extra`                     | `object`  | No       | Custom key-value pairs for your internal use. Stored with the transaction. |
 | `_links`                    | `object`  | No       | Callback and notification URLs.                                            |
@@ -61,6 +62,7 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
     "email": "customer@example.com",
     "firstName": "John",
     "lastName": "Doe",
+    "phoneNumber": "+15555555555",
     "zipCode": "PAYZINK-001"
   },
   "extra": {
