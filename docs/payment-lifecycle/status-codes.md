@@ -75,9 +75,9 @@ switch (statusCode) {
 | `E000011`   | **Error - Country Blocked** — The transaction country is blocked.             | Transaction not allowed from this country.                 |
 | `E000012`   | **Error - Blacklisted** — The card or customer is blacklisted.                | Do not retry. Contact support if needed.                   |
 | `E000013`   | **Error - Undefined** — An undefined error occurred.                          | Ask customer to use a different card or contact card bank. |
-| `E000014`   | **Error - Decline Issuer** — An undefined error occurred.                     | Ask customer to use a different card or contact card bank. |
-| `E000015`   | **Error - Card Brand Unsupported** — An undefined error occurred.             | Ask customer to use a different card.                      |
-| `E000016`   | **Error - Too Many Attempts** — An undefined error occurred.                  | Try again in 24 hours.                                     |
+| `E000014`   | **Error - Decline Issuer** — Issuer decline payment.                          | Ask customer to use a different card or contact card bank. |
+| `E000015`   | **Error - Card Brand Unsupported** — Card brand is not supported.             | Ask customer to use a different card.                      |
+| `E000016`   | **Error - Too Many Attempts** — Too many success or failed attempts.          | Try again in 24 hours.                                     |
 
 ### Handling error codes
 
