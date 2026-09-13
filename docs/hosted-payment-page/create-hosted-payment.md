@@ -40,7 +40,11 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
 | `customer.phoneNumber`      | `string`  | No       | Customer phone number.                                                     |
 | `customer.firstName`        | `string`  | No       | Customer first name.                                                       |
 | `customer.lastName`         | `string`  | No       | Customer last name.                                                        |
+| `customer.country`          | `string`  | No       | 2-letter ISO 3166-1 country code (e.g., `AE`, `US`, `DE`).                 |
+| `customer.city`             | `string`  | No       | Customer's city.                                                           |
+| `customer.address`          | `string`  | No       | Customer's street address.                                                 |
 | `customer.zipCode`          | `string`  | No       | Customer's postal/ZIP code.                                                |
+| `customer.language`         | `string`  | No       | 2-letter ISO 639-1 language code (e.g., `ar`, `en`, `de`).                 |
 | `customer.ip`               | `string`  | No       | Customer's IP address.                                                     |
 | `extra`                     | `object`  | No       | Custom key-value pairs for your internal use. Stored with the transaction. |
 | `_links`                    | `object`  | No       | Callback and notification URLs.                                            |
@@ -63,7 +67,11 @@ Create a new hosted payment. Payzink returns a checkout URL where you redirect t
     "firstName": "John",
     "lastName": "Doe",
     "phoneNumber": "+15555555555",
-    "zipCode": "PAYZINK-001"
+    "country": "US",
+    "city": "New York",
+    "address": "350 5th Ave",
+    "zipCode": "10118",
+    "language": "en"
   },
   "extra": {
     "orderId": "MY-ORDER-001",

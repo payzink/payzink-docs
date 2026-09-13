@@ -47,7 +47,11 @@ Process a credit or debit card payment. Supports both immediate purchase and pre
 | `customer.phoneNumber`      | `string`  | No       | Customer's phone number with country code.                                                        |
 | `customer.firstName`        | `string`  | No       | Customer first name.                                                                              |
 | `customer.lastName`         | `string`  | No       | Customer last name.                                                                               |
+| `customer.country`          | `string`  | No       | 2-letter ISO 3166-1 country code (e.g., `AE`, `US`, `DE`).                                        |
+| `customer.city`             | `string`  | No       | Customer's city.                                                                                  |
+| `customer.address`          | `string`  | No       | Customer's street address.                                                                        |
 | `customer.zipCode`          | `string`  | No       | Customer's postal/ZIP code.                                                                       |
+| `customer.language`         | `string`  | No       | 2-letter ISO 639-1 language code (e.g., `ar`, `en`, `de`).                                        |
 | `customer.ip`               | `string`  | No       | Customer's IP address (recommended for fraud prevention).                                         |
 | `extra`                     | `object`  | No       | Custom key-value pairs for your internal use.                                                     |
 | `_links`                    | `object`  | No       | Callback and notification URLs.                                                                   |
@@ -74,11 +78,15 @@ Process a credit or debit card payment. Supports both immediate purchase and pre
   },
   "customer": {
     "email": "john@example.com",
-    "ip": "81.214.125.134",
+    "ip": "127.0.0.1",
     "phoneNumber": "+905551234567",
-    "zipCode": "34517",
     "firstName": "John",
-    "lastName": "Doe"
+    "lastName": "Doe",
+    "country": "AE",
+    "city": "Dubai",
+    "address": "Meydan Grandstand, Meydan Road",
+    "zipCode": "000000",
+    "language": "ar"
   },
   "extra": {
     "orderId": "MY-ORDER-001"
